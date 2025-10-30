@@ -1,0 +1,253 @@
+.sentence-reading-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 40px 20px;
+}
+
+.reading-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.page-title {
+  font-size: 32px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.progress-info {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.progress-text {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fc6c85;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%);
+  transition: width 0.3s ease;
+  border-radius: 10px;
+}
+
+.sentence-display {
+  margin: 50px 0;
+}
+
+.sentence-card {
+  background: linear-gradient(135deg, #ffecd215 0%, #fcb69f15 100%);
+  border: 3px solid #fc6c85;
+  border-radius: 20px;
+  padding: 50px 40px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(252, 108, 133, 0.2);
+}
+
+.sentence-label {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+.sentence-text {
+  font-size: 28px;
+  color: #333;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.recording-section {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.instruction-text {
+  font-size: 16px;
+  color: #666;
+  margin-top: 20px;
+}
+
+.playback-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.success-message {
+  font-size: 20px;
+  color: #4CAF50;
+  font-weight: 600;
+  padding: 15px 30px;
+  background-color: #e8f5e9;
+  border-radius: 10px;
+}
+
+/* 업로드 상태 표시 */
+.upload-status {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 15px 30px;
+  border-radius: 10px;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.upload-status.uploading {
+  color: #ff9800;
+  background-color: #fff3e0;
+}
+
+.upload-status.success {
+  color: #4CAF50;
+  background-color: #e8f5e9;
+}
+
+.upload-status.error {
+  color: #f44336;
+  background-color: #ffebee;
+}
+
+.playback-controls {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.play-button,
+.re-record-button {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.play-button:disabled,
+.re-record-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.play-button {
+  background-color: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+
+.play-button:hover:not(:disabled) {
+  background-color: #1976D2;
+  transform: translateY(-2px);
+}
+
+.re-record-button {
+  background-color: white;
+  color: #ff9800;
+  border-color: #ff9800;
+}
+
+.re-record-button:hover:not(:disabled) {
+  background-color: #ff9800;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.next-button {
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(252, 182, 159, 0.4);
+  margin-top: 10px;
+  color: #d65a3a;
+}
+
+.next-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(252, 182, 159, 0.6);
+}
+
+.recorded-count {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .reading-container {
+    padding: 25px 20px;
+  }
+
+  .page-title {
+    font-size: 26px;
+  }
+
+  .sentence-card {
+    padding: 35px 25px;
+  }
+
+  .sentence-text {
+    font-size: 22px;
+  }
+
+  .playback-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .play-button,
+  .re-record-button,
+  .next-button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,186 @@
+.instruction-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 40px 20px;
+}
+
+.instruction-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-out;
+}
+
+.instruction-title {
+  font-size: 32px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: 700;
+}
+
+.instruction-content {
+  color: #555;
+}
+
+.instruction-section {
+  margin-bottom: 35px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #eee;
+}
+
+.instruction-section:last-of-type {
+  border-bottom: none;
+}
+
+.instruction-section h2 {
+  font-size: 22px;
+  color: #667eea;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.instruction-text {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.instruction-text p {
+  margin-bottom: 15px;
+}
+
+.instruction-text ol,
+.instruction-text ul {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.instruction-text li {
+  margin: 10px 0;
+  padding-left: 5px;
+}
+
+.instruction-text strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.agreement-section {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 30px 0;
+  border: 2px solid #667eea;
+}
+
+.agreement-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+}
+
+.agreement-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.agreement-checkbox span {
+  line-height: 1.5;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.back-button,
+.agree-button {
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.agree-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.agree-button:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+.agree-button.disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.agree-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .instruction-container {
+    padding: 25px 20px;
+  }
+
+  .instruction-title {
+    font-size: 26px;
+  }
+
+  .instruction-section h2 {
+    font-size: 20px;
+  }
+
+  .instruction-text {
+    font-size: 15px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .back-button,
+  .agree-button {
+    width: 100%;
+  }
+}

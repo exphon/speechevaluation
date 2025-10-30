@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import IndexPage from './pages/IndexPage';
+import InstructionPage from './pages/InstructionPage';
+import WordReadingPage from './pages/WordReadingPage';
+import SentenceReadingPage from './pages/SentenceReadingPage';
+import ParagraphReadingPage from './pages/ParagraphReadingPage';
+import CompletionPage from './pages/CompletionPage';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<IndexPage />} />
+          <Route path="/instructions" element={<InstructionPage />} />
+          <Route path="/word-reading" element={<WordReadingPage />} />
+          <Route path="/sentence-reading" element={<SentenceReadingPage />} />
+          <Route path="/paragraph-reading" element={<ParagraphReadingPage />} />
+          <Route path="/completion" element={<CompletionPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
