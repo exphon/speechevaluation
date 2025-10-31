@@ -18,7 +18,8 @@ const SentenceReadingPage = () => {
   const [uploadStatus, setUploadStatus] = useState(null);
 
   const sessionId = location.state?.sessionId;
-  const wordRecordings = location.state?.wordRecordings || [];
+  const meta = location.state?.meta;
+  const wordRecordings = location.state?.wordRecordings || (location.state?.wordRecording ? [{ id: null, title: '단어 읽기 (10개)' }] : []);
   
   const currentSentence = sentences[currentIndex];
   const isLastSentence = currentIndex === sentences.length - 1;
@@ -86,7 +87,8 @@ const SentenceReadingPage = () => {
           state: { 
             wordRecordings: wordRecordings,
             sentenceRecordings: recordings,
-            sessionId: sessionId
+            sessionId: sessionId,
+            meta: meta,
           }
         });
       } else {

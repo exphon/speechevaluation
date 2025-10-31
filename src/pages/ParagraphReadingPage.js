@@ -17,6 +17,7 @@ const ParagraphReadingPage = () => {
   const [recordingId, setRecordingId] = useState(null);
 
   const sessionId = location.state?.sessionId;
+  const meta = location.state?.meta;
   const wordRecordings = location.state?.wordRecordings || [];
   const sentenceRecordings = location.state?.sentenceRecordings || [];
 
@@ -65,7 +66,8 @@ const ParagraphReadingPage = () => {
             id: recordingId,
             text: paragraph,
             title: '문단 읽기'
-          }
+          },
+          meta: meta,
         }
       });
     }

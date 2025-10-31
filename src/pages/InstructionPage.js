@@ -13,43 +13,8 @@ const InstructionPage = () => {
 
   const handleAgree = async () => {
     if (agreed && !creating) {
-      setCreating(true);
-      
-      try {
-        // 세션 생성 시도
-        const sessionName = `평가 세션 ${new Date().toLocaleString('ko-KR')}`;
-        const session = await createSession(sessionName, '말하기 평가');
-        
-        console.log('✅ 세션 생성 완료:', session);
-        
-        // 세션 ID와 함께 단어 읽기 페이지로 이동
-        navigate('/word-reading', {
-          state: { sessionId: session.id }
-        });
-        
-      } catch (error) {
-        console.error('❌ 세션 생성 실패:', error);
-        console.error('오류 상세:', error.response?.data || error.message);
-        
-        // 세션 생성 실패 시 선택지 제공
-        const proceed = window.confirm(
-          '서버에 연결할 수 없습니다.\n' +
-          '세션 없이 로컬에서만 녹음을 진행하시겠습니까?\n' +
-          '(녹음은 가능하지만 서버 업로드는 나중에 수동으로 해야 합니다)\n\n' +
-          '확인: 로컬 녹음 진행\n' +
-          '취소: 돌아가기'
-        );
-        
-        if (proceed) {
-          // 세션 없이 진행
-          console.log('⚠️ 세션 없이 로컬 녹음 모드로 진행');
-          navigate('/word-reading', {
-            state: { sessionId: null }
-          });
-        } else {
-          setCreating(false);
-        }
-      }
+      // 메타정보 입력 화면으로 이동 (세션 생성은 그 화면에서 처리)
+      navigate('/meta');
     }
   };
 

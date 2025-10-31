@@ -162,13 +162,15 @@ export const transcribeRecording = async (recordingId) => {
  * @param {string} description - 세션 설명 (선택)
  * @returns {Promise} 생성된 세션 정보
  */
-export const createSession = async (name = null, description = null) => {
+export const createSession = async (name = null, description = null, metadata = null) => {
   try {
     console.log('📝 Creating new session...');
     
     const data = {};
     if (name) data.name = name;
     if (description) data.description = description;
+    // 메타데이터를 백엔드에 전달 (백엔드가 지원하지 않으면 무시됨)
+    if (metadata) data.metadata = metadata;
     
     const response = await api.post('/sessions/', data);
 

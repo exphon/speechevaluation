@@ -16,12 +16,14 @@ const WordReadingPage = () => {
   const [showPlayback, setShowPlayback] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(null); // null | 'uploading' | 'success' | 'error'
   const [sessionId, setSessionId] = useState(null);
+  const [meta, setMeta] = useState(null);
+  const [recordingId, setRecordingId] = useState(null);
+  const [recordingTitle, setRecordingTitle] = useState(`단어 읽기 (${words.length}개)`);
 
   // 세션 ID 가져오기
   useEffect(() => {
-    if (location.state?.sessionId) {
-      setSessionId(location.state.sessionId);
-    }
+    if (location.state?.sessionId !== undefined) setSessionId(location.state.sessionId);
+    if (location.state?.meta) setMeta(location.state.meta);
   }, [location.state]);
 
   const handleRecordingComplete = async (audioBlob) => {
@@ -39,11 +41,13 @@ const WordReadingPage = () => {
 
     try {
       // 즉시 서버에 업로드
-      const title = `단어 읽기 (${words.length}개)`;
-      const response = await uploadRecording(audioBlob, title, sessionId);
+  const title = `단어 읽기 (${words.length}개)`;
+  setRecordingTitle(title);
+  const response = await uploadRecording(audioBlob, title, sessionId);
       
       console.log('✅ 업로드 성공:', response);
       setUploadStatus('success');
+  setRecordingId(response.id);
       
     } catch (error) {
       console.error('❌ 업로드 실패:', error);
@@ -60,8 +64,15 @@ const WordReadingPage = () => {
       // 문장 읽기로 이동
       navigate('/sentence-reading', { 
         state: { 
-          wordRecording: recording,
-          sessionId: sessionId
+          // 단어 전체 녹음 1개를 다음 페이지로 전달 (ID 포함)
+          wordRecordings: [
+            {
+              id: recordingId,
+              title: recordingTitle,
+            }
+          ],
+          sessionId: sessionId,
+          meta: meta,
         }
       });
     }
