@@ -212,6 +212,30 @@ export const completeSession = async (sessionId) => {
 };
 
 /**
+ * 참여자 ID로 메타데이터 조회
+ * @param {string} participantId - 6자리 참여자 ID
+ * @returns {Promise} 메타데이터 정보
+ */
+export const getMetadataByParticipantId = async (participantId) => {
+  try {
+    console.log(`🔍 Fetching metadata for participant: ${participantId}...`);
+    
+    // 백엔드 API 엔드포인트에 따라 조정 필요
+    // 옵션 1: /sessions/by-participant/{id}
+    // 옵션 2: /metadata/{id}
+    // 옵션 3: /sessions/?participant_id={id}
+    const response = await api.get(`/sessions/by-participant/${participantId}/`);
+    
+    console.log('✅ Metadata found:', response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('❌ Metadata fetch error:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
  * 적응형 문제 요청
  * @param {string} level - 평가된 레벨 (상/중/하)
  * @param {string} sessionId - 세션 ID

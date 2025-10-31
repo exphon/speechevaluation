@@ -7,6 +7,8 @@ import WordReadingPage from './pages/WordReadingPage';
 import SentenceReadingPage from './pages/SentenceReadingPage';
 import ParagraphReadingPage from './pages/ParagraphReadingPage';
 import CompletionPage from './pages/CompletionPage';
+import SpeakingLoginPage from './pages/SpeakingLoginPage';
+import SpeakingTestPage from './pages/SpeakingTestPage';
 import './App.css';
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
           <Route path="/sentence-reading" element={<SentenceReadingPage />} />
           <Route path="/paragraph-reading" element={<ParagraphReadingPage />} />
           <Route path="/completion" element={<CompletionPage />} />
+          <Route path="/speaking-login" element={<SpeakingLoginPage />} />
+          <Route path="/speaking-test" element={<SpeakingTestPage />} />
         </Routes>
       </div>
     </Router>
