@@ -220,17 +220,62 @@ export const getMetadataByParticipantId = async (participantId) => {
   try {
     console.log(`🔍 Fetching metadata for participant: ${participantId}...`);
     
-    // 백엔드 API 엔드포인트에 따라 조정 필요
-    // 옵션 1: /sessions/by-participant/{id}
-    // 옵션 2: /metadata/{id}
-    // 옵션 3: /sessions/?participant_id={id}
-    const response = await api.get(`/sessions/by-participant/${participantId}/`);
+    // 세션 목록에서 participant_id로 필터링
+    const response = await api.get('/sessions/', {
+      params: { participant_id: participantId }
+    });
     
-    console.log('✅ Metadata found:', response.data);
-    return response.data;
+    console.log('📊 API Response:', response.data);
+    
+    // 페이지네이션된 응답 처리
+    let sessions = [];
+    if (response.data.results && Array.isArray(response.data.results)) {
+      sessions = response.data.results;
+    } else if (Array.isArray(response.data)) {
+      sessions = response.data;
+    }
+    
+    console.log(`📋 Found ${sessions.length} session(s)`);
+    
+    // 세션이 없으면 404 에러
+    if (sessions.length === 0) {
+      const error = new Error('Participant not found');
+      error.response = { status: 404 };
+      throw error;
+    }
+    
+    // 가장 최근 세션 선택 (첫 번째)
+    const session = sessions[0];
+    console.log('✅ Selected session:', session);
+    
+    // metadata 필드 파싱
+    if (session.metadata) {
+      const metadata = typeof session.metadata === 'string' 
+        ? JSON.parse(session.metadata) 
+        : session.metadata;
+      
+      console.log('✅ Metadata extracted:', metadata);
+      
+      // 세션 ID도 함께 반환
+      return {
+        ...metadata,
+        session_id: session.id,
+        session_name: session.name,
+      };
+    }
+    
+    // metadata 필드가 없으면 에러
+    const error = new Error('No metadata found for this participant');
+    error.response = { status: 404 };
+    throw error;
     
   } catch (error) {
-    console.error('❌ Metadata fetch error:', error.response?.data || error.message);
+    console.error('❌ Metadata fetch error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data
+    });
     throw error;
   }
 };
