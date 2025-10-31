@@ -17,9 +17,11 @@ const api = axios.create({
  * @param {Blob} audioBlob - 녹음된 오디오 파일
  * @param {string} title - 녹음 제목
  * @param {number} sessionId - 세션 ID (선택)
+ * @param {string} recordingType - 녹음 유형: 'word', 'sentence', 'paragraph' (선택)
+ * @param {Object} metadata - 참여자 메타데이터 (선택)
  * @returns {Promise} 서버 응답 (녹음 정보)
  */
-export const uploadRecording = async (audioBlob, title, sessionId = null) => {
+export const uploadRecording = async (audioBlob, title, sessionId = null, recordingType = null, metadata = null) => {
   try {
     const formData = new FormData();
     
@@ -35,7 +37,17 @@ export const uploadRecording = async (audioBlob, title, sessionId = null) => {
       formData.append('session', sessionId);
     }
 
-    console.log(`📤 Uploading: "${title}"...`);
+    // 녹음 유형 추가 (word, sentence, paragraph)
+    if (recordingType) {
+      formData.append('recording_type', recordingType);
+    }
+
+    // 메타데이터 추가 (JSON 문자열로 전송)
+    if (metadata) {
+      formData.append('metadata', JSON.stringify(metadata));
+    }
+
+    console.log(`📤 Uploading: "${title}" (type: ${recordingType || 'unknown'})...`);
     
     const response = await api.post('/recordings/', formData, {
       headers: {

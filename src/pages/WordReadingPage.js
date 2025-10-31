@@ -41,13 +41,13 @@ const WordReadingPage = () => {
 
     try {
       // 즉시 서버에 업로드
-  const title = `단어 읽기 (${words.length}개)`;
-  setRecordingTitle(title);
-  const response = await uploadRecording(audioBlob, title, sessionId);
+      const title = `단어 읽기 (${words.length}개)`;
+      setRecordingTitle(title);
+      const response = await uploadRecording(audioBlob, title, sessionId, 'word', meta);
       
       console.log('✅ 업로드 성공:', response);
       setUploadStatus('success');
-  setRecordingId(response.id);
+      setRecordingId(response.id);
       
     } catch (error) {
       console.error('❌ 업로드 실패:', error);

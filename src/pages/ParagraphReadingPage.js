@@ -37,7 +37,7 @@ const ParagraphReadingPage = () => {
 
     try {
       const title = '문단 읽기';
-      const response = await uploadRecording(audioBlob, title, sessionId);
+      const response = await uploadRecording(audioBlob, title, sessionId, 'paragraph', meta);
       
       console.log('✅ 업로드 성공:', response);
       setUploadStatus('success');
