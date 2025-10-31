@@ -256,11 +256,15 @@ export const getMetadataByParticipantId = async (participantId) => {
       
       console.log('✅ Metadata extracted:', metadata);
       
-      // 세션 ID도 함께 반환
+      // 세션 ID와 발음평가 레벨도 함께 반환
+      // TODO: 실제 발음평가 결과에서 레벨 계산 (현재는 임시로 '하' 반환)
+      const pronunciationLevel = '하'; // '상', '중', '하' 중 하나
+      
       return {
         ...metadata,
         session_id: session.id,
         session_name: session.name,
+        pronunciation_level: pronunciationLevel, // 발음평가 레벨 추가
       };
     }
     

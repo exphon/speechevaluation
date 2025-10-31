@@ -11,6 +11,7 @@ const SpeakingTestPage = () => {
   
   const [metadata, setMetadata] = useState(null);
   const [participantId, setParticipantId] = useState(null);
+  const [pronunciationLevel, setPronunciationLevel] = useState(null); // '상', '중', '하'
 
   useEffect(() => {
     // 로그인 페이지에서 전달받은 메타데이터 확인
@@ -23,6 +24,7 @@ const SpeakingTestPage = () => {
 
     setMetadata(location.state.metadata);
     setParticipantId(location.state.participantId);
+    setPronunciationLevel(location.state.metadata.pronunciation_level || '하');
   }, [location.state, navigate]);
 
   if (!metadata) {
@@ -43,6 +45,9 @@ const SpeakingTestPage = () => {
           <div className="participant-info">
             <p className="participant-id">참여자 ID: <strong>{participantId}</strong></p>
             {metadata.name && <p className="participant-name">이름: <strong>{metadata.name}</strong></p>}
+            <p className="pronunciation-level">
+              발음평가: <strong className={`level-badge level-${pronunciationLevel}`}>{pronunciationLevel}</strong>
+            </p>
           </div>
         </div>
 
@@ -84,12 +89,42 @@ const SpeakingTestPage = () => {
 
         <div className="test-instructions">
           <h3>평가 안내</h3>
-          <p>말하기평가는 다음 단계로 진행됩니다:</p>
-          <ul>
-            <li>💡 주제에 대한 자유 발화</li>
-            <li>🗣️ 질문에 대한 응답</li>
-            <li>📊 종합 평가</li>
-          </ul>
+          <p>발음평가 결과 <strong className={`level-${pronunciationLevel}`}>'{pronunciationLevel}'</strong> 수준으로 평가되었습니다.</p>
+          <p>말하기평가는 귀하의 수준에 맞춰 다음과 같이 진행됩니다:</p>
+          
+          {pronunciationLevel === '하' && (
+            <div className="level-description">
+              <h4>📘 기초 단계 (하)</h4>
+              <ul>
+                <li>� 간단한 일상 주제에 대한 발화</li>
+                <li>🗣️ 기본적인 질문에 대한 짧은 응답</li>
+                <li>📊 기초 어휘와 문장 구조 평가</li>
+              </ul>
+            </div>
+          )}
+          
+          {pronunciationLevel === '중' && (
+            <div className="level-description">
+              <h4>📗 중급 단계 (중)</h4>
+              <ul>
+                <li>💬 다양한 주제에 대한 자유 발화</li>
+                <li>🗣️ 복합 질문에 대한 상세 응답</li>
+                <li>📊 어휘 다양성과 문법 정확성 평가</li>
+              </ul>
+            </div>
+          )}
+          
+          {pronunciationLevel === '상' && (
+            <div className="level-description">
+              <h4>📕 고급 단계 (상)</h4>
+              <ul>
+                <li>💬 추상적 주제에 대한 논리적 발화</li>
+                <li>�️ 복잡한 상황 설명 및 의견 제시</li>
+                <li>�📊 유창성과 표현력 종합 평가</li>
+              </ul>
+            </div>
+          )}
+          
           <p className="note">* 각 문항은 자동으로 녹음되며, 평가 후 피드백을 제공합니다.</p>
         </div>
 
@@ -103,8 +138,22 @@ const SpeakingTestPage = () => {
           <button 
             className="start-button"
             onClick={() => {
-              // TODO: 말하기평가 첫 번째 문항으로 이동
-              alert('말하기평가 문항 구현 예정');
+              // 발음평가 레벨에 따라 다른 문항 페이지로 이동
+              const levelRoutes = {
+                '하': '/speaking-question-low',
+                '중': '/speaking-question-mid',
+                '상': '/speaking-question-high'
+              };
+              
+              const targetRoute = levelRoutes[pronunciationLevel] || '/speaking-question-low';
+              
+              navigate(targetRoute, {
+                state: {
+                  metadata: metadata,
+                  participantId: participantId,
+                  pronunciationLevel: pronunciationLevel,
+                }
+              });
             }}
           >
             평가 시작하기 →

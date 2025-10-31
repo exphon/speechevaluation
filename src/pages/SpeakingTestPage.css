@@ -43,7 +43,8 @@
 }
 
 .participant-id,
-.participant-name {
+.participant-name,
+.pronunciation-level {
   font-size: 14px;
   color: #666;
   margin: 0;
@@ -53,6 +54,29 @@
 .participant-name strong {
   color: #f5576c;
   font-weight: 700;
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.level-badge.level-하 {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.level-badge.level-중 {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.level-badge.level-상 {
+  background: #fce4ec;
+  color: #c2185b;
 }
 
 .metadata-summary {
@@ -136,6 +160,41 @@
   color: #888;
   font-style: italic;
   margin-top: 12px;
+}
+
+.level-description {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  border-left: 4px solid #f5576c;
+}
+
+.level-description h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 12px;
+}
+
+.level-description ul {
+  margin: 0;
+  padding-left: 0;
+}
+
+.level-하 {
+  color: #1976d2;
+  font-weight: 700;
+}
+
+.level-중 {
+  color: #f57c00;
+  font-weight: 700;
+}
+
+.level-상 {
+  color: #c2185b;
+  font-weight: 700;
 }
 
 .action-buttons {
