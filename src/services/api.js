@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // API 기본 설정
-const API_BASE_URL = 'http://210.125.93.241:8020/api';
+// 배포(HTTPS) 환경에서는 '/api'로 프록시(리라이트) 사용, 로컬 개발에서는 .env의 REACT_APP_API_BASE_URL 사용
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -221,8 +222,9 @@ export const getAdaptiveQuestion = async (level, sessionId = null) => {
  */
 export const checkServerStatus = async () => {
   try {
-    const response = await axios.get('http://210.125.93.241:8020/');
-    return response.data;
+    // 동일 오리진을 통해 프록시된 백엔드 상태 확인 (혼합 컨텐츠 방지)
+    const response = await api.get('/');
+    return response.data || { status: 'ok' };
   } catch (error) {
     console.error('Server status check error:', error);
     return { status: 'offline', error: error.message };
