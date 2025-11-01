@@ -59,7 +59,16 @@ export const uploadRecording = async (audioBlob, title, sessionId = null, record
     return response.data;
     
   } catch (error) {
-    console.error('❌ Audio upload error:', error.response?.data || error.message);
+    console.error('❌ Audio upload error:', {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      message: error.message,
+      config: {
+        url: error.config?.url,
+        method: error.config?.method,
+      }
+    });
     throw error;
   }
 };

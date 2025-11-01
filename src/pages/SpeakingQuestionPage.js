@@ -81,12 +81,27 @@ const SpeakingQuestionPage = () => {
       const title = `말하기 ${currentQ.grade}등급 - ${currentQ.type}`;
       const recordingType = `speaking_grade${currentQ.grade}`;
 
+      console.log('📤 업로드 시도:', {
+        title,
+        recordingType,
+        sessionId,
+        blobSize: audioBlob.size,
+        blobType: audioBlob.type,
+        hasMetadata: !!metadata,
+        metadata: metadata,
+      });
+
       const response = await uploadRecording(audioBlob, title, sessionId, recordingType, metadata);
       console.log('✅ 업로드 성공:', response);
       setUploadStatus('success');
       setPhase('completed');
     } catch (error) {
-      console.error('❌ 업로드 실패:', error);
+      console.error('❌ 업로드 실패:', {
+        error: error,
+        response: error.response?.data,
+        status: error.response?.status,
+        message: error.message,
+      });
       setUploadStatus('error');
       setPhase('completed');
     }
