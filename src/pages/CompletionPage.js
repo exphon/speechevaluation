@@ -19,6 +19,7 @@ const CompletionPage = () => {
   const wordRecordings = location.state?.wordRecordings || [];
   const sentenceRecordings = location.state?.sentenceRecordings || [];
   const paragraphRecording = location.state?.paragraphRecording || null;
+  const meta = location.state?.meta || null;
 
   const totalRecordings = wordRecordings.length + sentenceRecordings.length + (paragraphRecording ? 1 : 0);
 
@@ -148,7 +149,18 @@ const CompletionPage = () => {
 
         {sessionId ? (
           <div className="session-info-box">
-            <h4>세션 정보</h4>
+            <h4>평가 정보</h4>
+            {meta?.participant_id && (
+              <p>
+                참여자 ID: <strong>{meta.participant_id}</strong>
+                <br />
+                <small style={{color: '#666', fontSize: '13px'}}>
+                  💡 말하기평가 시 숫자 부분만 입력하세요 (P_ 제외)
+                  <br />
+                  예: {meta.participant_id} → {meta.participant_id.replace('P_', '')}
+                </small>
+              </p>
+            )}
             <p>세션 ID: <strong>{sessionId}</strong></p>
           </div>
         ) : (
