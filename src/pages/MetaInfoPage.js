@@ -44,8 +44,8 @@ const MetaInfoPage = () => {
 
     try {
       // 세션 생성 시 메타데이터를 함께 전송
-      const sessionName = `세션-${autoId}`;
-      const description = '말하기 평가 (메타정보 포함)';
+      const sessionName = autoId; // P_123456 형태로 저장
+      const description = '발음평가 (메타정보 포함)';
       const session = await createSession(sessionName, description, metadata);
 
       navigate('/word-reading', {

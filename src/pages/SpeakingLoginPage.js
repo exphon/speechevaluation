@@ -52,8 +52,8 @@ const SpeakingLoginPage = () => {
       };
 
       try {
-        const sessionName = `말하기세션-${speakingId}`;
-        const description = '말하기 평가 (발음평가 메타정보 기반)';
+        const sessionName = speakingId; // S_123456 형태로 저장
+        const description = '말하기평가 (발음평가 메타정보 기반)';
         const session = await createSession(sessionName, description, speakingMetadata);
         
         speakingMetadata.session_id = session.id;
