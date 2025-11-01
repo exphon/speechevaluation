@@ -57,6 +57,11 @@ const SpeakingQuestionPage = () => {
     setPhase('answer');
   };
 
+  // 준비시간 중 녹음 시작 버튼 클릭 → 즉시 대답시간으로 전환
+  const handleSkipPrep = () => {
+    setPhase('answer');
+  };
+
   // 대답시간 완료 → 녹음 가능 상태로 전환 (자동 녹음은 하지 않음)
   const handleAnswerComplete = () => {
     setPhase('recorded');
@@ -219,8 +224,16 @@ const SpeakingQuestionPage = () => {
                 label="준비시간"
                 autoStart={true}
               />
+              <button 
+                className="start-recording-button"
+                onClick={handleSkipPrep}
+              >
+                🎤 녹음 시작하기
+              </button>
               <p className="instruction-text">
                 📖 질문을 읽고 답변을 준비하세요
+                <br />
+                <small>준비가 되었다면 위 버튼을 눌러 바로 녹음을 시작할 수 있습니다</small>
               </p>
             </>
           )}
