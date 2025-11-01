@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { createSession } from '../services/api';
 import './MetaInfoPage.css';
 
-// 6자리 숫자 ID 생성
-const generateId = () => String(Math.floor(100000 + Math.random() * 900000));
+// 6자리 숫자 ID 생성 (발음평가용 - P_ 접두어)
+const generatePronunciationId = () => `P_${String(Math.floor(100000 + Math.random() * 900000))}`;
 
 const currentYear = new Date().getFullYear();
 
 const MetaInfoPage = () => {
   const navigate = useNavigate();
 
-  const [autoId, setAutoId] = useState(generateId());
+  const [autoId, setAutoId] = useState(generatePronunciationId());
   const [name, setName] = useState('');
   const [birthYear, setBirthYear] = useState('');
   const [nativeLanguage, setNativeLanguage] = useState('');
@@ -25,7 +25,7 @@ const MetaInfoPage = () => {
     return list;
   }, []);
 
-  const handleRegenerateId = () => setAutoId(generateId());
+  const handleRegenerateId = () => setAutoId(generatePronunciationId());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,14 +84,14 @@ const MetaInfoPage = () => {
 
         <form className="meta-form" onSubmit={handleSubmit}>
           <div className="form-row">
-            <label>참여자 ID (6자리)</label>
+            <label>참여자 ID (발음평가용)</label>
             <div className="id-row">
               <input type="text" value={autoId} readOnly />
               <button type="button" className="regen-btn" onClick={handleRegenerateId}>
                 재생성
               </button>
             </div>
-            <p className="hint">자동으로 부여되는 식별자입니다.</p>
+            <p className="hint">P_ 접두어가 붙은 발음평가 전용 ID입니다. (말하기평가는 S_ 접두어)</p>
           </div>
 
           <div className="form-row">

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getMetadataByParticipantId } from '../services/api';
+import { getMetadataByParticipantId, createSession } from '../services/api';
 import './SpeakingLoginPage.css';
+
+// 말하기평가용 ID 생성 (S_ 접두어)
+const generateSpeakingId = (baseNumber) => `S_${baseNumber}`;
 
 /**
  * 말하기평가 로그인 페이지 - 6자리 ID로 메타데이터 조회
@@ -30,16 +33,40 @@ const SpeakingLoginPage = () => {
     setError(null);
 
     try {
-      // 서버에서 메타데이터 조회
-      const metadata = await getMetadataByParticipantId(participantId);
+      // P_ 접두어를 붙여 발음평가 메타데이터 조회
+      const pronunciationId = `P_${participantId}`;
+      const metadata = await getMetadataByParticipantId(pronunciationId);
       
-      console.log('✅ 메타데이터 조회 성공:', metadata);
+      console.log('✅ 발음평가 메타데이터 조회 성공:', metadata);
       
-      // 말하기평가 페이지로 이동 (메타데이터와 함께)
+      // 말하기평가용 ID 생성
+      const speakingId = generateSpeakingId(participantId);
+      
+      // 말하기평가 세션 생성
+      const speakingMetadata = {
+        ...metadata,
+        participant_id: speakingId, // S_ 접두어 ID로 변경
+        base_pronunciation_id: pronunciationId, // 원본 발음평가 ID 참조
+        evaluation_type: 'speaking',
+        created_at: new Date().toISOString(),
+      };
+
+      try {
+        const sessionName = `말하기세션-${speakingId}`;
+        const description = '말하기 평가 (발음평가 메타정보 기반)';
+        const session = await createSession(sessionName, description, speakingMetadata);
+        
+        speakingMetadata.session_id = session.id;
+        console.log('✅ 말하기평가 세션 생성 성공:', session.id);
+      } catch (sessionError) {
+        console.warn('⚠️ 세션 생성 실패, 로컬 모드로 진행:', sessionError);
+      }
+      
+      // 말하기평가 페이지로 이동
       navigate('/speaking-test', {
         state: {
-          metadata: metadata,
-          participantId: participantId,
+          metadata: speakingMetadata,
+          participantId: speakingId,
         }
       });
       
@@ -49,7 +76,7 @@ const SpeakingLoginPage = () => {
       // 404 또는 찾을 수 없는 경우
       if (error.response?.status === 404 || error.message.includes('not found')) {
         setError(
-          '해당 ID를 찾을 수 없습니다.\n발음평가를 먼저 완료해주세요.'
+          `ID "${participantId}"를 찾을 수 없습니다.\n발음평가를 먼저 완료해주세요.`
         );
       } else {
         setError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
@@ -73,7 +100,7 @@ const SpeakingLoginPage = () => {
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="participantId">참여자 ID (6자리)</label>
+            <label htmlFor="participantId">참여자 ID (6자리 숫자만)</label>
             <input
               id="participantId"
               type="text"
@@ -86,7 +113,10 @@ const SpeakingLoginPage = () => {
               disabled={loading}
               autoFocus
             />
-            <p className="hint">발음평가 시 받은 6자리 ID를 입력하세요</p>
+            <p className="hint">
+              발음평가 ID의 숫자 부분만 입력하세요 (P_ 제외)<br/>
+              <small>예: 발음평가 ID가 P_123456이면 → 123456만 입력</small>
+            </p>
           </div>
 
           {error && (

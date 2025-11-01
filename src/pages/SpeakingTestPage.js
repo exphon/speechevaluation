@@ -56,8 +56,14 @@ const SpeakingTestPage = () => {
           <div className="meta-grid">
             {metadata.participant_id && (
               <div className="meta-item">
-                <span className="meta-label">ID:</span>
+                <span className="meta-label">말하기 ID:</span>
                 <span className="meta-value">{metadata.participant_id}</span>
+              </div>
+            )}
+            {metadata.base_pronunciation_id && (
+              <div className="meta-item">
+                <span className="meta-label">발음 ID:</span>
+                <span className="meta-value">{metadata.base_pronunciation_id}</span>
               </div>
             )}
             {metadata.name && (
