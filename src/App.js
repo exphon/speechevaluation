@@ -9,9 +9,7 @@ import ParagraphReadingPage from './pages/ParagraphReadingPage';
 import CompletionPage from './pages/CompletionPage';
 import SpeakingLoginPage from './pages/SpeakingLoginPage';
 import SpeakingTestPage from './pages/SpeakingTestPage';
-import SpeakingQuestionLowPage from './pages/SpeakingQuestionLowPage';
-import SpeakingQuestionMidPage from './pages/SpeakingQuestionMidPage';
-import SpeakingQuestionHighPage from './pages/SpeakingQuestionHighPage';
+import SpeakingQuestionPage from './pages/SpeakingQuestionPage';
 import './App.css';
 
 function App() {
@@ -28,9 +26,7 @@ function App() {
           <Route path="/completion" element={<CompletionPage />} />
           <Route path="/speaking-login" element={<SpeakingLoginPage />} />
           <Route path="/speaking-test" element={<SpeakingTestPage />} />
-          <Route path="/speaking-question-low" element={<SpeakingQuestionLowPage />} />
-          <Route path="/speaking-question-mid" element={<SpeakingQuestionMidPage />} />
-          <Route path="/speaking-question-high" element={<SpeakingQuestionHighPage />} />
+          <Route path="/speaking-questions" element={<SpeakingQuestionPage />} />
         </Routes>
       </div>
     </Router>

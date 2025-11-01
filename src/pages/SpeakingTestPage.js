@@ -138,16 +138,8 @@ const SpeakingTestPage = () => {
           <button 
             className="start-button"
             onClick={() => {
-              // 발음평가 레벨에 따라 다른 문항 페이지로 이동
-              const levelRoutes = {
-                '하': '/speaking-question-low',
-                '중': '/speaking-question-mid',
-                '상': '/speaking-question-high'
-              };
-              
-              const targetRoute = levelRoutes[pronunciationLevel] || '/speaking-question-low';
-              
-              navigate(targetRoute, {
+              // 통합된 말하기 평가 페이지로 이동
+              navigate('/speaking-questions', {
                 state: {
                   metadata: metadata,
                   participantId: participantId,

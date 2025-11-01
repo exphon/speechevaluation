@@ -1,0 +1,89 @@
+.countdown-timer {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.countdown-timer.warning {
+  background: #fff3e0;
+  border: 2px solid #ff9800;
+}
+
+.countdown-timer.danger {
+  background: #ffebee;
+  border: 2px solid #f44336;
+  animation: pulse 1s infinite;
+}
+
+.timer-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.timer-display {
+  font-size: 48px;
+  font-weight: 800;
+  color: #333;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 16px;
+}
+
+.countdown-timer.warning .timer-display {
+  color: #f57c00;
+}
+
+.countdown-timer.danger .timer-display {
+  color: #d32f2f;
+}
+
+.timer-bar {
+  width: 100%;
+  height: 12px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.timer-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+  transition: width 1s linear;
+  border-radius: 6px;
+}
+
+.countdown-timer.warning .timer-progress {
+  background: linear-gradient(90deg, #ff9800 0%, #ffb74d 100%);
+}
+
+.countdown-timer.danger .timer-progress {
+  background: linear-gradient(90deg, #f44336 0%, #ef5350 100%);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(244, 67, 54, 0.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .timer-display {
+    font-size: 36px;
+  }
+  
+  .countdown-timer {
+    padding: 20px;
+  }
+}
