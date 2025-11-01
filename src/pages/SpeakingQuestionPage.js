@@ -264,17 +264,6 @@ const SpeakingQuestionPage = () => {
 
           {phase === 'completed' && (
             <div className="playback-section">
-              {uploadStatus === 'success' && (
-                <div className="upload-status success">
-                  {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
-                </div>
-              )}
-              {uploadStatus === 'error' && (
-                <div className="upload-status error">
-                  ❌ 업로드 실패 (로컬에 저장됨)
-                </div>
-              )}
-
               <div className="playback-controls">
                 <button className="play-button" onClick={playRecording}>
                   🔊 녹음 듣기
@@ -287,6 +276,17 @@ const SpeakingQuestionPage = () => {
               <button className="next-button" onClick={handleNext}>
                 {currentQuestionIndex < questions.length - 1 ? '다음 문항 →' : '평가 완료 →'}
               </button>
+
+              {uploadStatus === 'success' && (
+                <div className="upload-status success">
+                  {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
+                </div>
+              )}
+              {uploadStatus === 'error' && (
+                <div className="upload-status error">
+                  ❌ 업로드 실패 (로컬에 저장됨)
+                </div>
+              )}
             </div>
           )}
         </div>

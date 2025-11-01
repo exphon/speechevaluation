@@ -127,16 +127,6 @@ const WordReadingPage = () => {
                   ⏳ 서버에 업로드 중...
                 </div>
               )}
-              {uploadStatus === 'success' && (
-                <div className="upload-status success">
-                  {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
-                </div>
-              )}
-              {uploadStatus === 'error' && (
-                <div className="upload-status error">
-                  ❌ 업로드 실패. 다시 녹음해주세요.
-                </div>
-              )}
               
               <div className="playback-controls">
                 <button 
@@ -162,6 +152,17 @@ const WordReadingPage = () => {
                 >
                   문장 읽기로 이동 →
                 </button>
+              )}
+
+              {uploadStatus === 'success' && (
+                <div className="upload-status success">
+                  {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
+                </div>
+              )}
+              {uploadStatus === 'error' && (
+                <div className="upload-status error">
+                  ❌ 업로드 실패. 다시 녹음해주세요.
+                </div>
               )}
             </div>
           )}
