@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import RecordButton from '../components/RecordButton';
-import { paragraph } from '../data/testData';
+import { paragraph } from '../data/pronData';
 import { uploadRecording } from '../services/api';
 import './ParagraphReadingPage.css';
 
