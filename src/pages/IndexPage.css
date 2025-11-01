@@ -1,16 +1,19 @@
 .index-page {
+  width: 100%;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  overflow-x: hidden;
 }
 
 .welcome-container {
   background: white;
   border-radius: 20px;
   padding: 50px;
+  width: 100%;
   max-width: 1000px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.6s ease-in;
@@ -178,11 +181,11 @@
   }
 
   .welcome-title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .welcome-description {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .evaluation-types {
@@ -190,8 +193,53 @@
     gap: 16px;
   }
 
+  .eval-card {
+    padding: 20px;
+  }
+
+  .eval-card h3 {
+    font-size: 20px;
+  }
+
   .join-button {
     font-size: 16px;
     padding: 12px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .index-page {
+    padding: 10px;
+  }
+
+  .welcome-container {
+    padding: 20px 15px;
+    border-radius: 12px;
+  }
+
+  .welcome-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .welcome-description {
+    font-size: 14px;
+  }
+
+  .eval-card {
+    padding: 16px;
+  }
+
+  .eval-card h3 {
+    font-size: 18px;
+  }
+
+  .eval-card h4 {
+    font-size: 15px;
+  }
+
+  .join-button {
+    font-size: 15px;
+    padding: 10px 20px;
   }
 }

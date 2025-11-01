@@ -1,10 +1,13 @@
 .word-reading-page {
+  width: 100%;
   min-height: 100vh;
   background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
   padding: 40px 20px;
+  overflow-x: hidden;
 }
 
 .reading-container {
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
   background: white;
@@ -227,12 +230,16 @@
 }
 
 @media (max-width: 768px) {
+  .word-reading-page {
+    padding: 20px 15px;
+  }
+
   .reading-container {
     padding: 25px 20px;
   }
 
   .page-title {
-    font-size: 26px;
+    font-size: 24px;
   }
 
   .words-grid {
@@ -251,11 +258,48 @@
   .playback-controls {
     flex-direction: column;
     width: 100%;
+    gap: 10px;
   }
 
   .play-button,
   .re-record-button,
   .next-button {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .word-reading-page {
+    padding: 15px 10px;
+  }
+
+  .reading-container {
+    padding: 20px 15px;
+    border-radius: 12px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .instruction-subtitle {
+    font-size: 14px;
+  }
+
+  .words-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .word-item {
+    padding: 12px 8px;
+  }
+
+  .word-number {
+    font-size: 11px;
+  }
+
+  .word-text {
+    font-size: 16px;
   }
 }
