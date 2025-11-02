@@ -194,7 +194,7 @@ const CompletionPage = () => {
         <div className="success-icon">🎉</div>
         
         <h1 className="completion-title">
-          발음 평가가 완료되었습니다!
+          발음 평가를 위한 녹음이 완료되었습니다!
         </h1>
         
         <p className="completion-message">

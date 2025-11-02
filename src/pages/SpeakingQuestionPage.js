@@ -204,21 +204,6 @@ const SpeakingQuestionPage = () => {
     }
   };
 
-  // 재녹음
-  const handleReRecord = () => {
-    setRecording(null);
-    setUploadStatus(null);
-    setPhase('answer'); // 대답시간 단계로 돌아감 (타이머는 재시작 안 함)
-  };
-
-  // 녹음 재생
-  const playRecording = () => {
-    if (recording) {
-      const audio = new Audio(URL.createObjectURL(recording));
-      audio.play();
-    }
-  };
-
   // 로딩 중
   if (!metadata || !questions.length) {
     return (
@@ -390,17 +375,6 @@ const SpeakingQuestionPage = () => {
                   </div>
                 )}
               </div>
-
-              {recording && (
-                <div className="playback-controls">
-                  <button className="play-button" onClick={playRecording}>
-                    🔊 녹음 듣기
-                  </button>
-                  <button className="re-record-button" onClick={handleReRecord}>
-                    🔄 다시 녹음하기
-                  </button>
-                </div>
-              )}
 
               <button className="next-button" onClick={handleNext}>
                 {currentQuestionIndex < questions.length - 1 ? '다음 문항 →' : '평가 완료 →'}
