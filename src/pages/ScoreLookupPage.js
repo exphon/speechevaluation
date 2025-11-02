@@ -53,7 +53,7 @@ const ScoreLookupPage = () => {
 
     } catch (err) {
       console.error('❌ 점수 조회 실패:', err);
-      setError('점수를 조회하는 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+      setError('채점이 아직 완료되지 않았습니다. 나중에 다시 시도해주세요.');
     } finally {
       setSearching(false);
     }
@@ -76,7 +76,7 @@ const ScoreLookupPage = () => {
         {!result ? (
           <form onSubmit={handleSubmit} className="lookup-form">
             <div className="form-group">
-              <label htmlFor="sessionId">세션 ID *</label>
+              <label htmlFor="sessionId">참여자 ID *</label>
               <input
                 type="text"
                 id="sessionId"
@@ -86,7 +86,7 @@ const ScoreLookupPage = () => {
                 disabled={searching}
                 required
               />
-              <p className="hint">평가 완료 시 안내받은 세션 ID를 입력하세요</p>
+              <p className="hint">평가 완료 시 안내받은 참여자 ID를 입력하세요</p>
             </div>
 
             <div className="form-group">
