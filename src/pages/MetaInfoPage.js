@@ -14,8 +14,11 @@ const MetaInfoPage = () => {
   const [autoId, setAutoId] = useState(generatePronunciationId());
   const [name, setName] = useState('');
   const [birthYear, setBirthYear] = useState('');
+  const [gender, setGender] = useState(''); // 성별
   const [nativeLanguage, setNativeLanguage] = useState('');
-  const [koreanMonths, setKoreanMonths] = useState(''); // 한국어 습득 기간(개월)
+  const [koreaResidence, setKoreaResidence] = useState(''); // 한국 거주 경험
+  const [koreanLearningMonths, setKoreanLearningMonths] = useState(''); // 한국어 학습 기간(개월)
+  const [koreanMonths, setKoreanMonths] = useState(''); // 한국어 습득 기간(개월) - 기존 필드 유지
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -35,7 +38,10 @@ const MetaInfoPage = () => {
       participant_id: autoId,
       name: name || null,
       birth_year: birthYear || null,
+      gender: gender || null,
       native_language: nativeLanguage || null,
+      korea_residence: koreaResidence || null,
+      korean_learning_months: koreanLearningMonths ? Number(koreanLearningMonths) : null,
       korean_acquisition_months: koreanMonths ? Number(koreanMonths) : null,
       created_at: new Date().toISOString(),
     };
@@ -112,12 +118,44 @@ const MetaInfoPage = () => {
           </div>
 
           <div className="form-row">
+            <label>성별</label>
+            <select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="">선택하세요</option>
+              <option value="남">남</option>
+              <option value="여">여</option>
+            </select>
+          </div>
+
+          <div className="form-row">
             <label>모국어</label>
             <input
               type="text"
               value={nativeLanguage}
               onChange={(e) => setNativeLanguage(e.target.value)}
               placeholder="예: 한국어, 영어, 스페인어..."
+            />
+          </div>
+
+          <div className="form-row">
+            <label>한국 거주 경험</label>
+            <select value={koreaResidence} onChange={(e) => setKoreaResidence(e.target.value)}>
+              <option value="">선택하세요</option>
+              <option value="무">무</option>
+              <option value="6개월 이하">6개월 이하</option>
+              <option value="1년 이하">1년 이하</option>
+              <option value="2년 이하">2년 이하</option>
+              <option value="2년 이상">2년 이상</option>
+            </select>
+          </div>
+
+          <div className="form-row">
+            <label>한국어 학습 기간 (개월)</label>
+            <input
+              type="number"
+              min="0"
+              value={koreanLearningMonths}
+              onChange={(e) => setKoreanLearningMonths(e.target.value)}
+              placeholder="예: 24 (2년)"
             />
           </div>
 
