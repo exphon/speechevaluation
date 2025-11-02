@@ -85,6 +85,7 @@ const SpeakingQuestionPage = () => {
       const currentQ = questions[currentQuestionIndex];
       const title = `말하기 ${currentQ.grade}등급 - ${currentQ.type}`;
       const recordingType = `speaking_grade${currentQ.grade}`;
+      const originalText = currentQ.question; // 질문 텍스트를 원본 텍스트로 사용
 
       console.log('📤 업로드 시도:', {
         title,
@@ -94,9 +95,10 @@ const SpeakingQuestionPage = () => {
         blobType: audioBlob.type,
         hasMetadata: !!metadata,
         metadata: metadata,
+        originalText: originalText,
       });
 
-      const response = await uploadRecording(audioBlob, title, sessionId, recordingType, metadata);
+      const response = await uploadRecording(audioBlob, title, sessionId, recordingType, metadata, originalText);
       console.log('✅ 업로드 성공:', response);
       setUploadStatus('success');
       setPhase('completed');

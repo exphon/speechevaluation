@@ -43,7 +43,9 @@ const WordReadingPage = () => {
       // 즉시 서버에 업로드
       const title = `단어 읽기 (${words.length}개)`;
       setRecordingTitle(title);
-      const response = await uploadRecording(audioBlob, title, sessionId, 'word', meta);
+      // 모든 단어를 공백으로 구분하여 하나의 문자열로 결합
+      const originalText = words.join(', ');
+      const response = await uploadRecording(audioBlob, title, sessionId, 'word', meta, originalText);
       
       console.log('✅ 업로드 성공:', response);
       setUploadStatus('success');

@@ -47,7 +47,7 @@ const SentenceReadingPage = () => {
 
     try {
       const title = `문장 ${currentIndex + 1}: ${currentSentence}`;
-      const response = await uploadRecording(audioBlob, title, sessionId, 'sentence', meta);
+      const response = await uploadRecording(audioBlob, title, sessionId, 'sentence', meta, currentSentence);
       
       console.log('✅ 업로드 성공:', response);
       setUploadStatus('success');
