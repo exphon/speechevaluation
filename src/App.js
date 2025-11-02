@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import IndexPage from './pages/IndexPage';
 import InstructionPage from './pages/InstructionPage';
@@ -15,6 +15,22 @@ import ScoreLookupPage from './pages/ScoreLookupPage';
 import './App.css';
 
 function App() {
+  // 앱 시작 시 CSRF 토큰 받아오기
+  useEffect(() => {
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '/api';
+    
+    fetch(`${API_BASE_URL}/sessions/`, {
+      method: 'GET',
+      credentials: 'include', // ⚠️ 쿠키 전송 허용
+    })
+      .then(() => {
+        console.log('✅ CSRF token initialized');
+      })
+      .catch((error) => {
+        console.warn('⚠️ CSRF token initialization failed (non-critical):', error.message);
+      });
+  }, []);
+
   return (
     <Router>
       <div className="App">

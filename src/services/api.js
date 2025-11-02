@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+// 쿠키에서 CSRF 토큰 읽기
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 // API 기본 설정
 // 배포(HTTPS) 환경에서는 '/api'로 프록시(리라이트) 사용, 로컬 개발에서는 .env의 REACT_APP_API_BASE_URL 사용
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '/api';
@@ -10,7 +17,22 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 60000, // 60초 타임아웃 (음성 처리는 시간이 걸릴 수 있음)
+  withCredentials: true, // ⚠️ 쿠키 전송 허용 (CSRF 토큰용)
 });
+
+// 요청 인터셉터: 모든 요청에 CSRF 토큰 추가
+api.interceptors.request.use(
+  (config) => {
+    const csrfToken = getCookie('csrftoken');
+    if (csrfToken) {
+      config.headers['X-CSRFToken'] = csrfToken;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 /**
  * 단일 녹음 파일을 서버에 업로드
