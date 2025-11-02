@@ -122,9 +122,9 @@ const SpeakingCompletionPage = () => {
               </p>
               
               <div className="session-info">
-                <div className="info-item">
+                <div className="info-item participant-id-item">
                   <span className="label">참여자 ID:</span>
-                  <span className="value">{participantId ? participantId.replace(/^S_/, '') : 'N/A'}</span>
+                  <span className="value participant-id-value">{participantId ? participantId.replace(/^S_/, '') : 'N/A'}</span>
                 </div>
                 {email && (
                   <div className="info-item">

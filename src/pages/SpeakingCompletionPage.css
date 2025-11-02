@@ -215,6 +215,20 @@
   font-family: monospace;
 }
 
+.participant-id-item {
+  background: #f0f8ff;
+  padding: 16px 12px !important;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.participant-id-value {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  color: #667eea !important;
+  letter-spacing: 2px;
+}
+
 .notice-box {
   background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
   border-radius: 12px;
