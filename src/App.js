@@ -18,13 +18,14 @@ function App() {
   // 앱 시작 시 CSRF 토큰 받아오기
   useEffect(() => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '/api';
-    
-    fetch(`${API_BASE_URL}/sessions/`, {
+
+    // 백엔드 로그인 엔드포인트를 호출해 CSRF 쿠키를 미리 수신한다.
+    fetch(`${API_BASE_URL}/login/`, {
       method: 'GET',
       credentials: 'include', // ⚠️ 쿠키 전송 허용
     })
       .then(() => {
-        console.log('✅ CSRF token initialized');
+        console.log('✅ CSRF token initialized via /login/');
       })
       .catch((error) => {
         console.warn('⚠️ CSRF token initialization failed (non-critical):', error.message);
