@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { transcribeRecording, getRecording } from '../services/api';
+import { transcribeRecording, getRecording, updateSessionPronunciationLevel } from '../services/api';
 import { evaluatePronunciation } from '../utils/levenshtein';
 import './CompletionPage.css';
 
@@ -121,6 +121,17 @@ const CompletionPage = () => {
         grade: overallGrade,
         totalCount: evaluatedCount,
       });
+
+      // 서버에 발음 등급 저장
+      if (sessionId) {
+        try {
+          await updateSessionPronunciationLevel(sessionId, overallGrade);
+          console.log(`✅ 발음 등급 서버 저장 완료: ${overallGrade}`);
+        } catch (error) {
+          console.error('⚠️ 발음 등급 저장 실패:', error);
+          // 저장 실패해도 계속 진행
+        }
+      }
     }
 
     setTranscribing(false);

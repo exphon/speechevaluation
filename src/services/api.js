@@ -270,9 +270,10 @@ export const getMetadataByParticipantId = async (participantId) => {
       
       console.log('✅ Metadata extracted:', metadata);
       
-      // 세션 ID와 발음평가 레벨도 함께 반환
-      // TODO: 실제 발음평가 결과에서 레벨 계산 (현재는 임시로 '하' 반환)
-      const pronunciationLevel = '하'; // '상', '중', '하' 중 하나
+      // 세션에 저장된 발음평가 레벨 가져오기 (없으면 '하' 기본값)
+      const pronunciationLevel = session.pronunciation_level || metadata.pronunciation_level || '하';
+      
+      console.log(`📊 Pronunciation Level: ${pronunciationLevel}`);
       
       return {
         ...metadata,
@@ -294,6 +295,29 @@ export const getMetadataByParticipantId = async (participantId) => {
       status: error.response?.status,
       data: error.response?.data
     });
+    throw error;
+  }
+};
+
+/**
+ * 세션의 발음 등급 업데이트
+ * @param {number} sessionId - 세션 ID
+ * @param {string} pronunciationLevel - 발음 등급 (상/중/하)
+ * @returns {Promise} 업데이트된 세션 정보
+ */
+export const updateSessionPronunciationLevel = async (sessionId, pronunciationLevel) => {
+  try {
+    console.log(`📝 Updating pronunciation level for session ${sessionId}: ${pronunciationLevel}...`);
+    
+    const response = await api.patch(`/sessions/${sessionId}/`, {
+      pronunciation_level: pronunciationLevel
+    });
+    
+    console.log('✅ Pronunciation level updated:', response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('❌ Pronunciation level update error:', error.response?.data || error.message);
     throw error;
   }
 };
