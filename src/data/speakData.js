@@ -35,6 +35,7 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-1-01',
       prompt: '고향이 어디입니까?\n무엇이 유명합니까?',
       hints: ['고향 이름', '고향에서 유명한 것(2개)'],
+      audio: '/speaking/audio/grade-1-01.wav',   // 문제 읽기 음성
     },
   ],
   2: [
@@ -43,6 +44,7 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-2-01',
       prompt: '이번 방학 때 여행을 가려고 합니다. 어디로 가겠습니까?\n여행을 가기 전에 무엇을 준비하겠습니까?\n여행을 가서 무엇을 하겠습니까? 여행 계획에 대해 이야기하십시오',
       hints: ['여행을 갈 곳', '여행을 가기 전에 할 일', '여행지에서 할 일'],
+      audio: '/speaking/audio/grade-2-01.wav',   // 문제 읽기 음성
     },
   ],
   3: [
@@ -51,6 +53,7 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-3-01',
       prompt: '기억에 남는 공연이나 영화, 드라마가 있습니까?\n어떤 이야기이고 어떤 장면이 기억에 남는지 이야기하십시오.',
       hints: ['공연이나 영화, 드라마 제목', '중심 내용', '기억에 남는 장면'],
+      audio: '/speaking/audio/grade-3-01.wav',   // 문제 읽기 음성
     },
   ],
   4: [

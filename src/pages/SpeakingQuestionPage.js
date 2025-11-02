@@ -205,27 +205,8 @@ const SpeakingQuestionPage = () => {
               <span className="grade-tag">{currentQ.grade}등급</span>
               <span className="type-tag">{currentQ.type}</span>
             </div>
-            <p className="question-prompt">질문</p>
-            <div className="question-text">
-              <h2 className="question-main">{currentQ.item.prompt}</h2>
-            </div>
 
-            {/* 이미지 표시 (4~6등급) */}
-            {currentQ.item.image && (
-              <div className="question-image-container">
-                <img 
-                  src={currentQ.item.image} 
-                  alt={`${currentQ.grade}등급 문제 이미지`}
-                  className="question-image"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    console.error('이미지 로드 실패:', currentQ.item.image);
-                  }}
-                />
-              </div>
-            )}
-
-            {/* 오디오 재생 (4~6등급) */}
+            {/* 오디오 재생 (모든 등급) - 문제 읽기 음성 */}
             {currentQ.item.audio && (
               <div className="question-audio-container">
                 <audio 
@@ -244,8 +225,28 @@ const SpeakingQuestionPage = () => {
                     }
                   }}
                 >
-                  🔊 음성 듣기
+                  🔊 문제 듣기
                 </button>
+              </div>
+            )}
+
+            <p className="question-prompt">질문</p>
+            <div className="question-text">
+              <h2 className="question-main">{currentQ.item.prompt}</h2>
+            </div>
+
+            {/* 이미지 표시 (4~6등급만) - 지문 이해를 돕는 그림/도표 */}
+            {currentQ.item.image && currentQ.grade >= 4 && (
+              <div className="question-image-container">
+                <img 
+                  src={currentQ.item.image} 
+                  alt={`${currentQ.grade}등급 참고 자료`}
+                  className="question-image"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    console.error('이미지 로드 실패:', currentQ.item.image);
+                  }}
+                />
               </div>
             )}
 
