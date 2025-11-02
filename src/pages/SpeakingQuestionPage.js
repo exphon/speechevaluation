@@ -231,6 +231,7 @@ const SpeakingQuestionPage = () => {
           {phase === 'prep' && (
             <>
               <CountdownTimer
+                key="prep-timer"
                 seconds={currentQ.prepSec}
                 onComplete={handlePrepComplete}
                 label="준비시간"
@@ -251,6 +252,7 @@ const SpeakingQuestionPage = () => {
           {phase === 'answer' && (
             <>
               <CountdownTimer
+                key="answer-timer"
                 seconds={currentQ.answerSec}
                 onComplete={handleAnswerComplete}
                 label="대답시간"
