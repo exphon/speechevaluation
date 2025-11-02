@@ -6,13 +6,15 @@ import './RecordButton.css';
  * 녹음 버튼 컴포넌트
  * @param {Function} onRecordingComplete - 녹음 완료 시 호출되는 콜백 (audioBlob)
  * @param {boolean} disabled - 버튼 비활성화 여부
+ * @param {boolean} autoStart - 자동으로 녹음 시작 여부
  */
-const RecordButton = ({ onRecordingComplete, disabled = false }) => {
+const RecordButton = ({ onRecordingComplete, disabled = false, autoStart = false }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recorder, setRecorder] = useState(null);
   const [error, setError] = useState(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const [timer, setTimer] = useState(null);
+  const [hasAutoStarted, setHasAutoStarted] = useState(false);
 
   useEffect(() => {
     // 컴포넌트 마운트 시 recorder 초기화
@@ -30,6 +32,16 @@ const RecordButton = ({ onRecordingComplete, disabled = false }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // 자동 시작 기능
+  useEffect(() => {
+    if (autoStart && recorder && !isRecording && !hasAutoStarted) {
+      console.log('🎤 자동 녹음 시작');
+      setHasAutoStarted(true);
+      startRecording();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoStart, recorder, isRecording, hasAutoStarted]);
 
   const startRecording = async () => {
     try {

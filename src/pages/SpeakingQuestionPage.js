@@ -247,9 +247,14 @@ const SpeakingQuestionPage = () => {
                 label="대답시간"
                 autoStart={true}
               />
-              <RecordButton onRecordingComplete={handleRecordingComplete} />
+              <RecordButton 
+                onRecordingComplete={handleRecordingComplete}
+                autoStart={true}
+              />
               <p className="instruction-text">
-                🎤 녹음 버튼을 눌러 답변을 시작하세요
+                🎤 녹음이 자동으로 시작되었습니다
+                <br />
+                <small>녹음 중지 버튼을 눌러 답변을 마치세요</small>
               </p>
             </>
           )}
