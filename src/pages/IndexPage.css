@@ -151,6 +151,12 @@
   font-style: italic;
 }
 
+.note.important-note {
+  color: #1e88e5;
+  font-weight: 700;
+  font-style: normal;
+}
+
 .score-lookup-section {
   text-align: center;
   margin: 40px 0 20px;

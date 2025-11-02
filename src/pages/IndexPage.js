@@ -27,7 +27,7 @@ const IndexPage = () => {
     <div className="index-page">
       <div className="welcome-container">
         <h1 className="welcome-title">
-          말하기 평가 시스템에 오신 것을 환영합니다
+          한국어 말하기 평가 시스템에 오신 것을 환영합니다
         </h1>
         
         <div className="welcome-content">
@@ -73,7 +73,7 @@ const IndexPage = () => {
               >
                 말하기평가 참가하기
               </button>
-              <p className="note">* 발음평가를 먼저 완료해야 합니다</p>
+              <p className="note important-note">* 발음평가를 먼저 완료해야 합니다</p>
             </div>
           </div>
         </div>
