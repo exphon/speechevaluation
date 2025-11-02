@@ -234,29 +234,47 @@ export const getMetadataByParticipantId = async (participantId) => {
   try {
     console.log(`🔍 Fetching metadata for participant: ${participantId}...`);
     
-    // 세션 목록에서 participant_id로 필터링
-    const response = await api.get('/sessions/', {
-      params: { participant_id: participantId }
-    });
+    // 세션 목록에서 participant_id로 필터링 (모든 페이지 가져오기)
+    let allSessions = [];
+    let nextUrl = '/sessions/';
+    const params = { participant_id: participantId };
     
-    console.log('📊 API Response:', response.data);
-    
-    // 페이지네이션된 응답 처리
-    let sessions = [];
-    if (response.data.results && Array.isArray(response.data.results)) {
-      sessions = response.data.results;
-    } else if (Array.isArray(response.data)) {
-      sessions = response.data;
+    while (nextUrl) {
+      const response = await api.get(nextUrl, { params: nextUrl === '/sessions/' ? params : {} });
+      
+      console.log('📊 API Response:', response.data);
+      
+      // 페이지네이션된 응답 처리
+      let sessions = [];
+      if (response.data.results && Array.isArray(response.data.results)) {
+        sessions = response.data.results;
+        nextUrl = response.data.next ? new URL(response.data.next).pathname + new URL(response.data.next).search : null;
+      } else if (Array.isArray(response.data)) {
+        sessions = response.data;
+        nextUrl = null;
+      } else {
+        nextUrl = null;
+      }
+      
+      allSessions = allSessions.concat(sessions);
+      
+      // 무한 루프 방지 (최대 10페이지)
+      if (allSessions.length > 100) {
+        console.warn('⚠️ 너무 많은 세션, 100개로 제한');
+        break;
+      }
     }
     
-    console.log(`📋 Found ${sessions.length} session(s)`);
+    console.log(`📋 Found ${allSessions.length} session(s) in total`);
     
     // 세션이 없으면 404 에러
-    if (sessions.length === 0) {
+    if (allSessions.length === 0) {
       const error = new Error('Participant not found');
       error.response = { status: 404 };
       throw error;
     }
+    
+    const sessions = allSessions;
     
     // P_로 시작하는 ID는 발음평가 세션만 필터링
     // S_로 시작하는 ID가 조회되는 경우를 방지
