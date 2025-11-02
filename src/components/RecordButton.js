@@ -6,10 +6,12 @@ import './RecordButton.css';
  * 녹음 버튼 컴포넌트
  * @param {Function} onRecordingComplete - 녹음 완료 시 호출되는 콜백 (audioBlob)
  * @param {Function} onRecordingStart - 녹음 시작 시 호출되는 콜백
+ * @param {Function} onTimeComplete - 시간 완료 시 호출되는 콜백 (녹음 중이면 audioBlob 전달)
  * @param {boolean} disabled - 버튼 비활성화 여부
  * @param {boolean} autoStart - 자동으로 녹음 시작 여부
+ * @param {boolean} autoStop - 외부에서 녹음을 자동으로 중지시킬 때 사용
  */
-const RecordButton = ({ onRecordingComplete, onRecordingStart, disabled = false, autoStart = false }) => {
+const RecordButton = ({ onRecordingComplete, onRecordingStart, onTimeComplete, disabled = false, autoStart = false, autoStop = false }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recorder, setRecorder] = useState(null);
   const [error, setError] = useState(null);
@@ -43,6 +45,15 @@ const RecordButton = ({ onRecordingComplete, onRecordingStart, disabled = false,
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoStart, recorder, isRecording, hasAutoStarted]);
+
+  // 자동 중지 기능 (시간 완료 시)
+  useEffect(() => {
+    if (autoStop && isRecording && recorder) {
+      console.log('⏰ 시간 완료 - 자동 녹음 중지');
+      stopRecordingForTimeComplete();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoStop]);
 
   const startRecording = async () => {
     try {
@@ -82,6 +93,26 @@ const RecordButton = ({ onRecordingComplete, onRecordingStart, disabled = false,
 
       if (onRecordingComplete) {
         onRecordingComplete(audioBlob);
+      }
+    } catch (err) {
+      setError('녹음 중지 중 오류가 발생했습니다.');
+      console.error('Failed to stop recording:', err);
+    }
+  };
+
+  const stopRecordingForTimeComplete = async () => {
+    try {
+      const audioBlob = await recorder.stop();
+      setIsRecording(false);
+      
+      // 타이머 중지
+      if (timer) {
+        clearInterval(timer);
+        setTimer(null);
+      }
+
+      if (onTimeComplete) {
+        onTimeComplete(audioBlob);
       }
     } catch (err) {
       setError('녹음 중지 중 오류가 발생했습니다.');

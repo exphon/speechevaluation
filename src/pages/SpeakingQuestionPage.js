@@ -27,6 +27,7 @@ const SpeakingQuestionPage = () => {
   const [phase, setPhase] = useState('prep'); // 'prep' | 'answer' | 'recorded' | 'uploading' | 'completed'
   const [recording, setRecording] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(null);
+  const [shouldStopRecording, setShouldStopRecording] = useState(false); // 대답시간 완료 시 녹음 중지 신호
 
   // 오디오 재생 ref
   const audioRef = useRef(null);
@@ -106,17 +107,8 @@ const SpeakingQuestionPage = () => {
     setPhase('answer');
   };
 
-  // 대답시간 완료 → 녹음 가능 상태로 전환 (녹음 중이 아니면)
-  const handleAnswerComplete = () => {
-    console.log('⏰ 대답시간 완료');
-    setPhase('recorded');
-  };
-
-  // 녹음 완료
-  const handleRecordingComplete = async (audioBlob) => {
-    setRecording(audioBlob);
-    setPhase('uploading');
-
+  // 녹음 파일을 서버에 업로드하는 공통 함수
+  const uploadRecordingToServer = async (audioBlob) => {
     if (!sessionId) {
       console.log('⚠️ 세션 없음 - 로컬 저장만');
       setUploadStatus('success');
@@ -155,6 +147,39 @@ const SpeakingQuestionPage = () => {
         message: error.message,
       });
       setUploadStatus('error');
+      setPhase('completed');
+    }
+  };
+
+  // 대답시간 완료 → 녹음 중지 신호 전송
+  const handleAnswerComplete = () => {
+    console.log('⏰ 대답시간 완료 - 녹음 중지 신호 전송');
+    setShouldStopRecording(true);
+  };
+
+  // 녹음 완료 (버튼으로 중지한 경우)
+  const handleRecordingComplete = async (audioBlob) => {
+    setRecording(audioBlob);
+    setPhase('uploading');
+    setShouldStopRecording(false);
+
+    await uploadRecordingToServer(audioBlob);
+  };
+
+  // 시간 완료로 자동 중지된 경우
+  const handleTimeCompleteRecording = async (audioBlob) => {
+    console.log('⏰ 시간 완료로 녹음 자동 중지됨');
+    setRecording(audioBlob);
+    setShouldStopRecording(false);
+
+    if (audioBlob) {
+      // 녹음이 있으면 자동으로 업로드
+      setPhase('uploading');
+      await uploadRecordingToServer(audioBlob);
+    } else {
+      // 녹음이 없으면 완료 상태로 (녹음 없음 표시)
+      console.log('⚠️ 녹음된 데이터가 없습니다');
+      setUploadStatus('no-recording');
       setPhase('completed');
     }
   };
@@ -324,24 +349,14 @@ const SpeakingQuestionPage = () => {
               />
               <RecordButton 
                 onRecordingComplete={handleRecordingComplete}
+                onTimeComplete={handleTimeCompleteRecording}
                 autoStart={true}
+                autoStop={shouldStopRecording}
               />
               <p className="instruction-text">
                 🎤 녹음이 자동으로 시작되었습니다
                 <br />
                 <small>녹음 중지 버튼을 눌러 답변을 마치세요</small>
-              </p>
-            </>
-          )}
-
-          {phase === 'recorded' && (
-            <>
-              <div className="upload-status success">
-                ⏰ 대답시간이 종료되었습니다
-              </div>
-              <RecordButton onRecordingComplete={handleRecordingComplete} />
-              <p className="instruction-text">
-                🎤 시간이 지났지만 녹음을 원하시면 버튼을 눌러주세요
               </p>
             </>
           )}
@@ -358,29 +373,38 @@ const SpeakingQuestionPage = () => {
 
           {phase === 'completed' && (
             <div className="playback-section">
-              <div className="playback-controls">
-                <button className="play-button" onClick={playRecording}>
-                  🔊 녹음 듣기
-                </button>
-                <button className="re-record-button" onClick={handleReRecord}>
-                  🔄 다시 녹음하기
-                </button>
+              <div className="upload-status-message">
+                {uploadStatus === 'success' && (
+                  <div className="upload-status success">
+                    {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
+                  </div>
+                )}
+                {uploadStatus === 'error' && (
+                  <div className="upload-status error">
+                    ❌ 업로드 실패 (로컬에 저장됨)
+                  </div>
+                )}
+                {uploadStatus === 'no-recording' && (
+                  <div className="upload-status warning">
+                    ⚠️ 녹음된 답변이 없습니다
+                  </div>
+                )}
               </div>
+
+              {recording && (
+                <div className="playback-controls">
+                  <button className="play-button" onClick={playRecording}>
+                    🔊 녹음 듣기
+                  </button>
+                  <button className="re-record-button" onClick={handleReRecord}>
+                    🔄 다시 녹음하기
+                  </button>
+                </div>
+              )}
 
               <button className="next-button" onClick={handleNext}>
                 {currentQuestionIndex < questions.length - 1 ? '다음 문항 →' : '평가 완료 →'}
               </button>
-
-              {uploadStatus === 'success' && (
-                <div className="upload-status success">
-                  {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
-                </div>
-              )}
-              {uploadStatus === 'error' && (
-                <div className="upload-status error">
-                  ❌ 업로드 실패 (로컬에 저장됨)
-                </div>
-              )}
             </div>
           )}
         </div>

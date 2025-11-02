@@ -80,19 +80,6 @@ const WordReadingPage = () => {
     }
   };
 
-  const handleReRecord = () => {
-    setRecording(null);
-    setShowPlayback(false);
-    setUploadStatus(null);
-  };
-
-  const playRecording = () => {
-    if (recording) {
-      const audio = new Audio(URL.createObjectURL(recording));
-      audio.play();
-    }
-  };
-
   return (
     <div className="word-reading-page">
       <div className="reading-container">
@@ -130,37 +117,20 @@ const WordReadingPage = () => {
                 </div>
               )}
               
-              <div className="playback-controls">
-                <button 
-                  className="play-button"
-                  onClick={playRecording}
-                  disabled={uploadStatus === 'uploading'}
-                >
-                  🔊 녹음 듣기
-                </button>
-                <button 
-                  className="re-record-button"
-                  onClick={handleReRecord}
-                  disabled={uploadStatus === 'uploading'}
-                >
-                  🔄 다시 녹음하기
-                </button>
-              </div>
-              
               {uploadStatus === 'success' && (
-                <button 
-                  className="next-button"
-                  onClick={handleNext}
-                >
-                  문장 읽기로 이동 →
-                </button>
+                <>
+                  <div className="upload-status success">
+                    {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
+                  </div>
+                  <button 
+                    className="next-button"
+                    onClick={handleNext}
+                  >
+                    문장 읽기로 이동 →
+                  </button>
+                </>
               )}
 
-              {uploadStatus === 'success' && (
-                <div className="upload-status success">
-                  {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
-                </div>
-              )}
               {uploadStatus === 'error' && (
                 <div className="upload-status error">
                   ❌ 업로드 실패. 다시 녹음해주세요.

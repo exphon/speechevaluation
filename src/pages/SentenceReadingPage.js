@@ -101,19 +101,6 @@ const SentenceReadingPage = () => {
     }
   };
 
-  const handleReRecord = () => {
-    setCurrentRecording(null);
-    setShowPlayback(false);
-    setUploadStatus(null);
-  };
-
-  const playRecording = () => {
-    if (currentRecording) {
-      const audio = new Audio(URL.createObjectURL(currentRecording));
-      audio.play();
-    }
-  };
-
   return (
     <div className="sentence-reading-page">
       <div className="reading-container">
@@ -157,37 +144,20 @@ const SentenceReadingPage = () => {
                 </div>
               )}
               
-              <div className="playback-controls">
-                <button 
-                  className="play-button"
-                  onClick={playRecording}
-                  disabled={uploadStatus === 'uploading'}
-                >
-                  🔊 녹음 듣기
-                </button>
-                <button 
-                  className="re-record-button"
-                  onClick={handleReRecord}
-                  disabled={uploadStatus === 'uploading'}
-                >
-                  🔄 다시 녹음하기
-                </button>
-              </div>
-              
               {uploadStatus === 'success' && (
-                <button 
-                  className="next-button"
-                  onClick={handleNext}
-                >
-                  {isLastSentence ? '문단 읽기로 이동 →' : '다음 문장 →'}
-                </button>
+                <>
+                  <div className="upload-status success">
+                    {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
+                  </div>
+                  <button 
+                    className="next-button"
+                    onClick={handleNext}
+                  >
+                    {isLastSentence ? '문단 읽기로 이동 →' : '다음 문장 →'}
+                  </button>
+                </>
               )}
 
-              {uploadStatus === 'success' && (
-                <div className="upload-status success">
-                  {sessionId ? '✅ 업로드 완료!' : '✅ 녹음 완료! (로컬 저장)'}
-                </div>
-              )}
               {uploadStatus === 'error' && (
                 <div className="upload-status error">
                   ❌ 업로드 실패. 다시 녹음해주세요.
