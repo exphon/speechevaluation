@@ -132,6 +132,16 @@ const CompletionPage = () => {
           // 저장 실패해도 계속 진행
         }
       }
+      
+      // 브라우저 sessionStorage에도 저장 (서버 API가 GET에서 pronunciation_level을 반환하지 않는 경우 대비)
+      if (meta?.participant_id) {
+        try {
+          sessionStorage.setItem(`pronunciation_level_${meta.participant_id}`, overallGrade);
+          console.log(`💾 발음 등급 로컬 저장 완료: ${meta.participant_id} -> ${overallGrade}`);
+        } catch (error) {
+          console.error('⚠️ 로컬 저장 실패:', error);
+        }
+      }
     }
 
     setTranscribing(false);

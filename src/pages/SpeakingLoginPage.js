@@ -41,7 +41,23 @@ const SpeakingLoginPage = () => {
       const metadata = await getMetadataByParticipantId(pronunciationId);
       
       console.log('✅ 발음평가 메타데이터 조회 성공:', metadata);
-      console.log('📊 발음 평가 등급:', metadata.pronunciation_level);
+      console.log('📊 발음 평가 등급 (서버):', metadata.pronunciation_level);
+      
+      // sessionStorage에서 발음 등급 확인 (서버보다 우선)
+      let pronunciationLevel = metadata.pronunciation_level;
+      try {
+        const storedLevel = sessionStorage.getItem(`pronunciation_level_${pronunciationId}`);
+        if (storedLevel) {
+          console.log(`💾 로컬 저장된 발음 등급 발견: ${storedLevel}`);
+          pronunciationLevel = storedLevel;
+        }
+      } catch (error) {
+        console.warn('⚠️ sessionStorage 읽기 실패:', error);
+      }
+      
+      // 최종 발음 등급 (로컬 > 서버 > 기본값 '하')
+      pronunciationLevel = pronunciationLevel || '하';
+      console.log('📊 최종 발음 평가 등급:', pronunciationLevel);
       
       // 말하기평가용 ID 생성
       const speakingId = generateSpeakingId(participantId);
@@ -51,6 +67,7 @@ const SpeakingLoginPage = () => {
         ...metadata,
         participant_id: speakingId, // S_ 접두어 ID로 변경
         base_pronunciation_id: pronunciationId, // 원본 발음평가 ID 참조
+        pronunciation_level: pronunciationLevel, // 최종 발음 등급 반영
         evaluation_type: 'speaking',
         created_at: new Date().toISOString(),
       };
