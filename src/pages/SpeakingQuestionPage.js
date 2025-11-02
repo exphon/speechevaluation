@@ -85,12 +85,24 @@ const SpeakingQuestionPage = () => {
   // 준비시간 완료 → 대답시간으로 전환
   const handlePrepComplete = () => {
     console.log('⏰ 준비시간 완료 → 대답시간으로 전환');
+    // 오디오 재생 중단 (아직 재생 중이라면)
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      console.log('🔇 오디오 재생 중단 (준비시간 종료)');
+    }
     setPhase('answer');
   };
 
   // 준비시간 중 녹음 시작 → 대답시간으로 즉시 전환
   const handleRecordingStartDuringPrep = () => {
     console.log('🎤 준비시간 중 녹음 시작 → 대답시간으로 전환');
+    // 오디오 재생 중단
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      console.log('🔇 오디오 재생 중단');
+    }
     setPhase('answer');
   };
 
