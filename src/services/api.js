@@ -278,6 +278,12 @@ export const getMetadataByParticipantId = async (participantId) => {
     }
     
     console.log('✅ Selected session:', targetSession);
+    console.log('🔍 Session fields:', {
+      id: targetSession.id,
+      name: targetSession.name,
+      pronunciation_level: targetSession.pronunciation_level,
+      metadata: targetSession.metadata ? 'exists' : 'null',
+    });
     
     // metadata 필드 파싱
     if (targetSession.metadata) {
@@ -336,6 +342,7 @@ export const updateSessionPronunciationLevel = async (sessionId, pronunciationLe
     });
     
     console.log('✅ Pronunciation level updated:', response.data);
+    console.log('🔍 Updated session pronunciation_level field:', response.data.pronunciation_level);
     return response.data;
     
   } catch (error) {
