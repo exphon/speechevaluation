@@ -374,6 +374,12 @@ const CompletionPage = () => {
           >
             처음으로 돌아가기
           </button>
+          <button 
+            className="speaking-button"
+            onClick={() => navigate('/speaking-login')}
+          >
+            💬 말하기 평가 참가하기
+          </button>
         </div>
       </div>
     </div>
