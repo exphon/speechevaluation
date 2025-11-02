@@ -22,9 +22,15 @@ const SpeakingTestPage = () => {
       return;
     }
 
+    console.log('📋 SpeakingTestPage - 받은 메타데이터:', location.state.metadata);
+    console.log('📊 SpeakingTestPage - 발음 평가 등급:', location.state.metadata.pronunciation_level);
+
     setMetadata(location.state.metadata);
     setParticipantId(location.state.participantId);
-    setPronunciationLevel(location.state.metadata.pronunciation_level || '하');
+    
+    const level = location.state.metadata.pronunciation_level || '하';
+    console.log('📊 SpeakingTestPage - 설정될 발음 평가 등급:', level);
+    setPronunciationLevel(level);
   }, [location.state, navigate]);
 
   if (!metadata) {
@@ -144,6 +150,10 @@ const SpeakingTestPage = () => {
           <button 
             className="start-button"
             onClick={() => {
+              console.log('📋 SpeakingTestPage - 말하기 평가 시작 버튼 클릭');
+              console.log('📊 전달할 발음 평가 등급:', pronunciationLevel);
+              console.log('📋 전달할 메타데이터:', metadata);
+              
               // 통합된 말하기 평가 페이지로 이동
               navigate('/speaking-questions', {
                 state: {

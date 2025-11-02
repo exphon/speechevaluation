@@ -40,6 +40,12 @@ const SpeakingQuestionPage = () => {
     const pid = location.state.participantId;
     const level = location.state.pronunciationLevel;
 
+    console.log('📋 SpeakingQuestionPage - 받은 데이터:', {
+      metadata: meta,
+      participantId: pid,
+      pronunciationLevel: level
+    });
+
     setMetadata(meta);
     setParticipantId(pid);
     setPronunciationLevel(level);
@@ -47,6 +53,7 @@ const SpeakingQuestionPage = () => {
 
     // speakData에서 해당 수준의 문항 3개 가져오기
     const loadedQuestions = getSpeakingQuestionsForLevel(level, pid);
+    console.log(`📚 SpeakingQuestionPage - 등급 '${level}'에 맞는 문제 로드:`, loadedQuestions);
     setQuestions(loadedQuestions);
     
     console.log('📝 로드된 문항:', loadedQuestions);
