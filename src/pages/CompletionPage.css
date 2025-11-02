@@ -389,6 +389,137 @@
   border-top: 1px dashed #c8e6c9;
 }
 
+.evaluation-score {
+  font-size: 13px;
+  color: #333;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #c8e6c9;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.evaluation-score .score-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.evaluation-score .score-value {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 14px;
+}
+
+/* 전체 평가 결과 카드 */
+.overall-evaluation-card {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  border-radius: 20px;
+  padding: 0;
+  margin: 30px 0;
+  box-shadow: 0 8px 30px rgba(76, 175, 80, 0.4);
+  overflow: hidden;
+  animation: slideInUp 0.6s ease-out;
+}
+
+.overall-evaluation-card .evaluation-header {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.overall-evaluation-card .evaluation-icon {
+  font-size: 32px;
+}
+
+.overall-evaluation-card .evaluation-header h3 {
+  color: white;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.overall-evaluation-card .evaluation-body {
+  background: white;
+  padding: 30px;
+}
+
+.overall-evaluation-card .score-display {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7ff 0%, #e8ecff 100%);
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.overall-evaluation-card .score-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.overall-evaluation-card .score-value {
+  font-size: 56px;
+  font-weight: 900;
+  color: #4caf50;
+  font-family: 'Arial', sans-serif;
+  line-height: 1;
+}
+
+.overall-evaluation-card .score-max {
+  font-size: 18px;
+  color: #999;
+  margin-left: 5px;
+}
+
+.overall-evaluation-card .grade-display {
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.overall-evaluation-card .grade-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.overall-evaluation-card .grade-badge {
+  display: inline-block;
+  font-size: 48px;
+  font-weight: 900;
+  color: white;
+  padding: 20px 50px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.overall-evaluation-card .evaluation-info {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 2px dashed #e0e0e0;
+}
+
+.overall-evaluation-card .evaluation-info p {
+  font-size: 15px;
+  color: #555;
+  margin: 10px 0;
+}
+
+.overall-evaluation-card .evaluation-note {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+  margin-top: 15px;
+}
+
 .transcription-error {
   background: #ffebee;
   padding: 10px;

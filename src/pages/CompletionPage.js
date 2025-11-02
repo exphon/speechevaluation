@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { transcribeRecording, getRecording } from '../services/api';
+import { evaluatePronunciation } from '../utils/levenshtein';
 import './CompletionPage.css';
 
 /**
@@ -14,6 +15,7 @@ const CompletionPage = () => {
   const [transcriptions, setTranscriptions] = useState({});
   const [transcriptionErrors, setTranscriptionErrors] = useState({});
   const [transcriptionDetails, setTranscriptionDetails] = useState({}); // confidence, language 등
+  const [overallEvaluation, setOverallEvaluation] = useState(null); // 전체 평가 결과
 
   const sessionId = location.state?.sessionId;
   const wordRecordings = location.state?.wordRecordings || [];
@@ -92,8 +94,12 @@ const CompletionPage = () => {
     setTranscribing(true);
     console.log(`🎤 전체 전사 시작: ${allRecordingIds.length}개 녹음`);
 
+    let totalScore = 0;
+    let evaluatedCount = 0;
+
     for (const recordingId of allRecordingIds) {
       try {
+        // 전사 수행
         const result = await transcribeRecording(recordingId);
         
         // 전사 텍스트 저장
@@ -115,6 +121,23 @@ const CompletionPage = () => {
         }
         
         console.log(`✅ 전사 완료 (${recordingId}):`, result);
+
+        // 녹음 정보 가져오기 (original_text 포함)
+        try {
+          const recordingData = await getRecording(recordingId);
+          const originalText = recordingData.original_text;
+
+          if (originalText && transcriptionText) {
+            // Levenshtein Distance 평가 수행
+            const evaluation = evaluatePronunciation(originalText, transcriptionText);
+            totalScore += evaluation.score;
+            evaluatedCount++;
+
+            console.log(`📊 평가 완료 (${recordingId}):`, evaluation);
+          }
+        } catch (error) {
+          console.error(`⚠️ 녹음 정보 가져오기 실패 (${recordingId}):`, error);
+        }
         
         // 서버 부하를 줄이기 위해 약간의 딜레이
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -126,6 +149,24 @@ const CompletionPage = () => {
           [recordingId]: error.response?.data?.error || error.message
         }));
       }
+    }
+
+    // 전체 평가 결과 계산
+    if (evaluatedCount > 0) {
+      const averageScore = totalScore / evaluatedCount;
+      const overallGrade = averageScore >= 80 ? '상' : averageScore >= 60 ? '중' : '하';
+      
+      setOverallEvaluation({
+        averageScore: Math.round(averageScore * 10) / 10,
+        grade: overallGrade,
+        totalCount: evaluatedCount,
+      });
+
+      console.log(`📊 전체 평가:`, {
+        averageScore: Math.round(averageScore * 10) / 10,
+        grade: overallGrade,
+        totalCount: evaluatedCount,
+      });
     }
 
     setTranscribing(false);
@@ -212,6 +253,40 @@ const CompletionPage = () => {
             <p className="transcription-note">
               Whisper AI를 사용하여 음성을 텍스트로 변환합니다 (시간이 걸릴 수 있습니다)
             </p>
+          </div>
+        )}
+
+        {overallEvaluation && (
+          <div className="overall-evaluation-card">
+            <div className="evaluation-header">
+              <span className="evaluation-icon">📊</span>
+              <h3>발음 평가 결과</h3>
+            </div>
+            <div className="evaluation-body">
+              <div className="score-display">
+                <div className="score-label">평균 점수</div>
+                <div className="score-value">{overallEvaluation.averageScore}점</div>
+                <div className="score-max">/ 100점</div>
+              </div>
+              <div className="grade-display">
+                <div className="grade-label">종합 등급</div>
+                <div 
+                  className={`grade-badge grade-${overallEvaluation.grade}`}
+                  style={{
+                    backgroundColor: overallEvaluation.grade === '상' ? '#4caf50' : 
+                                   overallEvaluation.grade === '중' ? '#ff9800' : '#f44336'
+                  }}
+                >
+                  {overallEvaluation.grade}
+                </div>
+              </div>
+              <div className="evaluation-info">
+                <p>✅ {overallEvaluation.totalCount}개 녹음 평가 완료</p>
+                <p className="evaluation-note">
+                  * Levenshtein Distance 알고리즘을 사용하여 원본 텍스트와 전사 결과의 유사도를 측정했습니다.
+                </p>
+              </div>
+            </div>
           </div>
         )}
 
