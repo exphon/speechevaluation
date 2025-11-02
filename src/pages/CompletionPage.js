@@ -371,19 +371,6 @@ const CompletionPage = () => {
             처음으로 돌아가기
           </button>
         </div>
-
-        <div className="next-steps">
-          <h4>다음 단계</h4>
-          <p>
-            업로드된 녹음 파일은 서버에서 다음과 같이 처리됩니다:
-          </p>
-          <ul>
-            <li>🎤 Whisper를 통한 음성-텍스트 전사</li>
-            <li>🤖 OpenAI API를 통한 발음 평가 (accuracy, fluency, completeness)</li>
-            <li>� Speaking 평가 (content, organization, grammar, vocabulary)</li>
-            <li>💬 상세 피드백 및 개선 제안</li>
-          </ul>
-        </div>
       </div>
     </div>
   );
