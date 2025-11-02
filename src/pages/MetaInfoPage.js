@@ -13,7 +13,7 @@ const MetaInfoPage = () => {
 
   const [autoId, setAutoId] = useState(generatePronunciationId());
   const [name, setName] = useState('');
-  const [birthYear, setBirthYear] = useState('');
+  const [birthYear, setBirthYear] = useState('2000');
   const [gender, setGender] = useState(''); // 성별
   const [nativeLanguage, setNativeLanguage] = useState('');
   const [koreaResidence, setKoreaResidence] = useState(''); // 한국 거주 경험
@@ -88,7 +88,7 @@ const MetaInfoPage = () => {
     <div className="meta-page">
       <div className="meta-container">
         <h1 className="meta-title">참여자 메타정보</h1>
-        <p className="meta-subtitle">평가 전에 간단한 정보를 입력해주세요. (추후 확장될 수 있어요)</p>
+        <p className="meta-subtitle">평가 전에 간단한 정보를 입력해주세요.</p>
 
         <form className="meta-form" onSubmit={handleSubmit}>
           <div className="form-row">
@@ -181,9 +181,8 @@ const MetaInfoPage = () => {
               type="text"
               value={otherTestScore}
               onChange={(e) => setOtherTestScore(e.target.value)}
-              placeholder="예: KLAT 80점, KBS 한국어능력시험 3급"
+              placeholder="TOPIK 외 한국어 시험 점수를 입력하세요 (예: KLAT 80점, KBS 한국어능력시험 3급)"
             />
-            <p className="hint">TOPIK 외 다른 한국어 시험 점수를 입력하세요</p>
           </div>
 
           <div className="form-actions">
