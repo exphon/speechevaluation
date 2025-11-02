@@ -85,7 +85,7 @@ const IndexPage = () => {
           >
             📊 평가 점수 조회하기
           </button>
-          <p className="lookup-hint">평가 완료 후 세션 ID로 점수를 확인하세요</p>
+          <p className="lookup-hint">말하기 평가 완료 후 참여자 ID로 점수를 확인하세요</p>
         </div>
 
         <div className="system-info">
