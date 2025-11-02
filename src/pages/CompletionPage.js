@@ -423,9 +423,6 @@ const CompletionPage = () => {
             <p>
               ✅ 모든 녹음이 성공적으로 서버에 업로드되었습니다.
             </p>
-            <p>
-              서버에서 Whisper를 통한 음성 전사와 OpenAI API를 통한 발음 평가가 진행됩니다.
-            </p>
           </div>
         ) : (
           <div className="info-message" style={{background: '#fff3e0', borderLeftColor: '#ff9800'}}>
