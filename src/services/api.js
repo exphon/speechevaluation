@@ -266,6 +266,7 @@ export const getMetadataByParticipantId = async (participantId) => {
       console.log('🔍 세션 목록 상세:', sessions.map(s => ({
         id: s.id,
         name: s.name,
+        description: s.description,
         participant_id_in_metadata: s.metadata ? (typeof s.metadata === 'string' ? JSON.parse(s.metadata).participant_id : s.metadata.participant_id) : null
       })));
       
@@ -281,7 +282,25 @@ export const getMetadataByParticipantId = async (participantId) => {
           return meta.participant_id && meta.participant_id.startsWith('P_');
         });
         console.log(`🔍 Filtered by metadata.participant_id: ${metadataPronSessions.length}`);
-        targetSession = metadataPronSessions[0];
+        
+        if (metadataPronSessions.length === 0) {
+          // metadata에서도 찾지 못하면, description에 "발음평가"가 포함된 세션 찾기
+          console.log('⚠️ metadata로도 찾지 못함, description으로 재시도...');
+          const descPronSessions = sessions.filter(s => 
+            s.description && s.description.includes('발음평가')
+          );
+          console.log(`🔍 Filtered by description: ${descPronSessions.length}`);
+          
+          if (descPronSessions.length === 0) {
+            // 그래도 없으면 첫 번째 세션 사용 (최후의 수단)
+            console.warn('⚠️ 발음평가 세션을 찾지 못함, 첫 번째 세션 사용');
+            targetSession = sessions[0];
+          } else {
+            targetSession = descPronSessions[0];
+          }
+        } else {
+          targetSession = metadataPronSessions[0];
+        }
       } else {
         targetSession = pronSessions[0]; // 가장 최근 발음평가 세션
       }
