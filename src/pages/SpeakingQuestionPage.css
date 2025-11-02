@@ -218,64 +218,23 @@
   font-weight: 700;
 }
 
-/* 오디오 재생 버튼 (모든 등급 - 문제 읽기) */
-.question-audio-container {
-  margin: 0 0 24px 0;
-  text-align: center;
-  padding: 16px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 12px;
-}
-
-.audio-play-button {
-  padding: 12px 32px;
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.audio-play-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-}
-
-.audio-play-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
-}
-
-/* 이미지 표시 (4~6등급만 - 지문 이해를 돕는 참고자료) */
-.question-image-container {
+/* 이미지 카드 (4~6등급만 - 지문 이해를 돕는 참고자료) */
+.question-image-card {
   margin: 24px 0;
-  text-align: center;
+  padding: 0;
   background: white;
-  border-radius: 12px;
-  padding: 20px;
-  border: 2px solid #e0e0e0;
-}
-
-/* 이미지 표시 (4~6등급만 - 지문 이해를 돕는 참고자료) */
-.question-image-container {
-  margin: 24px 0;
-  text-align: center;
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
 }
 
 .question-image {
-  max-width: 100%;
-  max-height: 400px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-height: 500px;
   object-fit: contain;
+  display: block;
+  background: #fafafa;
 }
 
 .recording-section {

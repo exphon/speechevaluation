@@ -35,7 +35,7 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-1-01',
       prompt: '고향이 어디입니까?\n무엇이 유명합니까?',
       hints: ['고향 이름', '고향에서 유명한 것(2개)'],
-      audio: '/speaking/audio/grade-1-01.wav',   // 문제 읽기 음성
+      audio: '/speaking/audio/set1_level1.mp3',   // 문제 읽기 음성
     },
   ],
   2: [
@@ -44,7 +44,7 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-2-01',
       prompt: '이번 방학 때 여행을 가려고 합니다. 어디로 가겠습니까?\n여행을 가기 전에 무엇을 준비하겠습니까?\n여행을 가서 무엇을 하겠습니까? 여행 계획에 대해 이야기하십시오',
       hints: ['여행을 갈 곳', '여행을 가기 전에 할 일', '여행지에서 할 일'],
-      audio: '/speaking/audio/grade-2-01.wav',   // 문제 읽기 음성
+      audio: '/speaking/audio/set1_level2.mp3',   // 문제 읽기 음성
     },
   ],
   3: [
@@ -53,37 +53,37 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-3-01',
       prompt: '기억에 남는 공연이나 영화, 드라마가 있습니까?\n어떤 이야기이고 어떤 장면이 기억에 남는지 이야기하십시오.',
       hints: ['공연이나 영화, 드라마 제목', '중심 내용', '기억에 남는 장면'],
-      audio: '/speaking/audio/grade-3-01.wav',   // 문제 읽기 음성
+      audio: '/speaking/audio/set1_level3.mp3',   // 문제 읽기 음성
     },
   ],
   4: [
     {
       grade: 4,
       id: 'A-4-01',
-      prompt: '온라인 쇼핑과 오프라인 쇼핑을 비교하여 각각의 장단점을 말해보세요.',
-      hints: ['편의성', '가격/품질', '경험/안전'],
-      image: '/speaking/images/grade-4-01.png',  // 이미지 파일 경로
-      audio: '/speaking/audio/grade-4-01.wav',   // 오디오 파일 경로
+      prompt: '시대적 상황에 따라 직장 생활의 분위기가 달라집니다.\n최근 기술 발달의 변화로 과거와 현재의 근무 환경이 어떻게 달라졌는지 비교하고 어느 쪽을 선호하는지 이야기하십시오.',
+      hints: ['과거의 근무 환경', '현재의 근무 환경', '자신이 선호하는 방식'],
+      image: '/speaking/images/set1_level4.png',  // 이미지 파일 경로
+      audio: '/speaking/audio/set1_level4.mp3',   // 오디오 파일 경로
     },
   ],
   5: [
     {
       grade: 5,
       id: 'A-5-01',
-      prompt: '지역 사회의 쓰레기 문제 해결을 위해 어떤 정책이 필요한지 의견을 말해보세요.',
-      hints: ['문제의 현황', '구체적 대안', '기대 효과', '우려 사항'],
-      image: '/speaking/images/grade-5-01.png',
-      audio: '/speaking/audio/grade-5-01.wav',
+      prompt: '<조기교육>은 지능 발달이 빠른 학령기 이전의 어린이를 대상으로 일정한 교과과정에 따라 실시하는 교육을 말합니다. 예를 들면 6살 이전에 외국어나 수학 교육을 시키는 경우가 이에 해당됩니다. 이러한 교육 방식에 대해 찬성하는지 반대하는지 말하고 그렇게 생각하는 두 가지 근거를 말하십시오.',
+      hints: [''],
+      image: '/speaking/images/set1_level5.png',
+      audio: '/speaking/audio/set1_level5.mp3',
     },
   ],
   6: [
     {
       grade: 6,
       id: 'A-6-01',
-      prompt: '출산율 저하의 원인을 설명하고, 실질적인 해결 방안을 제시하세요.',
-      hints: ['원인 분석', '단기/장기 대책', '현실적 실행 가능성'],
-      image: '/speaking/images/grade-6-01.png',
-      audio: '/speaking/audio/grade-6-01.wav',
+      prompt: '최근 한국 사회 전반적으로 출산율이 급속히 하락하면서 저출산 현상이 심각해지고 있습니다.\n저출산 현상의 원인과 문제점은 무엇이고 이를 해결하기 위한 방안으로는 어떤 것이 있는지 자신의 생각을 말하십시오.',
+      hints: ['원인 - 결혼관의 변화', '문제점 - 생산 인구 감소', '해결 방안 - 육아 서비스 확충'],
+      image: '/speaking/images/set1_level6.png',
+      audio: '/speaking/audio/set1_level6.mp3',
     },
   ],
 });

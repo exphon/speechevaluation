@@ -62,6 +62,26 @@ const SpeakingQuestionPage = () => {
     console.log('📝 로드된 문항:', loadedQuestions);
   }, [location.state, navigate]);
 
+  // 문항 변경 시 오디오 자동 재생
+  useEffect(() => {
+    if (questions.length > 0 && audioRef.current) {
+      const currentQ = questions[currentQuestionIndex];
+      if (currentQ?.item?.audio) {
+        console.log('🔊 오디오 자동 재생:', currentQ.item.audio);
+        // 약간의 딜레이를 주어 UI가 렌더링된 후 재생
+        const playTimer = setTimeout(() => {
+          if (audioRef.current) {
+            audioRef.current.play().catch(err => {
+              console.error('오디오 자동 재생 실패:', err);
+            });
+          }
+        }, 500);
+        
+        return () => clearTimeout(playTimer);
+      }
+    }
+  }, [currentQuestionIndex, questions]);
+
   // 준비시간 완료 → 대답시간으로 전환
   const handlePrepComplete = () => {
     console.log('⏰ 준비시간 완료 → 대답시간으로 전환');
@@ -206,28 +226,18 @@ const SpeakingQuestionPage = () => {
               <span className="type-tag">{currentQ.type}</span>
             </div>
 
-            {/* 오디오 재생 (모든 등급) - 문제 읽기 음성 */}
+            {/* 숨겨진 오디오 (자동 재생) */}
             {currentQ.item.audio && (
-              <div className="question-audio-container">
-                <audio 
-                  ref={audioRef}
-                  src={currentQ.item.audio}
-                  onError={() => {
-                    console.error('오디오 로드 실패:', currentQ.item.audio);
-                  }}
-                />
-                <button 
-                  className="audio-play-button"
-                  onClick={() => {
-                    if (audioRef.current) {
-                      audioRef.current.currentTime = 0;
-                      audioRef.current.play();
-                    }
-                  }}
-                >
-                  🔊 문제 듣기
-                </button>
-              </div>
+              <audio 
+                ref={audioRef}
+                src={currentQ.item.audio}
+                onError={() => {
+                  console.error('오디오 로드 실패:', currentQ.item.audio);
+                }}
+                onPlay={() => {
+                  console.log('🔊 오디오 재생 시작');
+                }}
+              />
             )}
 
             <p className="question-prompt">질문</p>
@@ -237,7 +247,7 @@ const SpeakingQuestionPage = () => {
 
             {/* 이미지 표시 (4~6등급만) - 지문 이해를 돕는 그림/도표 */}
             {currentQ.item.image && currentQ.grade >= 4 && (
-              <div className="question-image-container">
+              <div className="question-image-card">
                 <img 
                   src={currentQ.item.image} 
                   alt={`${currentQ.grade}등급 참고 자료`}
