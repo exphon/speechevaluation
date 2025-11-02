@@ -177,7 +177,13 @@ export const transcribeRecording = async (recordingId) => {
     return response.data;
     
   } catch (error) {
-    console.error('❌ Transcription error:', error.response?.data || error.message);
+    console.error('❌ Transcription error:', {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      message: error.message,
+      recordingId: recordingId
+    });
     throw error;
   }
 };

@@ -97,10 +97,15 @@ const CompletionPage = () => {
         await new Promise(resolve => setTimeout(resolve, 500));
         
       } catch (error) {
-        console.error(`❌ 전사 실패 (${recordingId}):`, error);
+        console.error(`❌ 전사 실패 (${recordingId}):`, {
+          error: error,
+          response: error.response?.data,
+          status: error.response?.status,
+          message: error.message
+        });
         setTranscriptionErrors(prev => ({
           ...prev,
-          [recordingId]: error.response?.data?.error || error.message
+          [recordingId]: error.response?.data?.error || error.response?.data?.detail || error.message
         }));
       }
     }
