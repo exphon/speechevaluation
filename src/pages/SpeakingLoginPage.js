@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getMetadataByParticipantId, createSession } from '../services/api';
 import './SpeakingLoginPage.css';
 
@@ -11,7 +11,10 @@ const generateSpeakingId = (baseNumber) => `S_${baseNumber}`;
  */
 const SpeakingLoginPage = () => {
   const navigate = useNavigate();
-  const [participantId, setParticipantId] = useState('');
+  const location = useLocation();
+  // CompletionPage에서 전달받은 prefilledId가 있으면 사용, 없으면 빈 문자열
+  const prefilledId = location.state?.prefilledId || '';
+  const [participantId, setParticipantId] = useState(prefilledId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 

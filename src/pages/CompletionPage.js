@@ -376,7 +376,13 @@ const CompletionPage = () => {
           </button>
           <button 
             className="speaking-button"
-            onClick={() => navigate('/speaking-login')}
+            onClick={() => {
+              // P_123456에서 123456만 추출하여 전달
+              const idNumber = meta?.participant_id ? meta.participant_id.replace('P_', '') : null;
+              navigate('/speaking-login', {
+                state: { prefilledId: idNumber }
+              });
+            }}
           >
             💬 말하기 평가 참가하기
           </button>
