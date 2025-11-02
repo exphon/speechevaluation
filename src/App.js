@@ -10,6 +10,8 @@ import CompletionPage from './pages/CompletionPage';
 import SpeakingLoginPage from './pages/SpeakingLoginPage';
 import SpeakingTestPage from './pages/SpeakingTestPage';
 import SpeakingQuestionPage from './pages/SpeakingQuestionPage';
+import SpeakingCompletionPage from './pages/SpeakingCompletionPage';
+import ScoreLookupPage from './pages/ScoreLookupPage';
 import './App.css';
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
           <Route path="/speaking-login" element={<SpeakingLoginPage />} />
           <Route path="/speaking-test" element={<SpeakingTestPage />} />
           <Route path="/speaking-questions" element={<SpeakingQuestionPage />} />
+          <Route path="/speaking-completion" element={<SpeakingCompletionPage />} />
+          <Route path="/score-lookup" element={<ScoreLookupPage />} />
         </Routes>
       </div>
     </Router>

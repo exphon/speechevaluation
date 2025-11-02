@@ -168,12 +168,11 @@ const SpeakingQuestionPage = () => {
       setRecording(null);
       setUploadStatus(null);
     } else {
-      // 모든 문항 완료
-      alert('모든 말하기 평가가 완료되었습니다!');
-      navigate('/', {
+      // 모든 문항 완료 - 완료 페이지로 이동
+      navigate('/speaking-completion', {
         state: {
-          completed: true,
           sessionId: sessionId,
+          participantId: participantId,
           metadata: metadata,
         }
       });

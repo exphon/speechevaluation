@@ -529,4 +529,61 @@ export const checkServerStatus = async () => {
   }
 };
 
+/**
+ * 세션에 이메일 주소 업데이트
+ * @param {number} sessionId - 세션 ID
+ * @param {string} email - 이메일 주소
+ * @returns {Promise} 업데이트된 세션 정보
+ */
+export const updateSessionEmail = async (sessionId, email) => {
+  try {
+    const response = await api.patch(`/sessions/${sessionId}/`, {
+      email: email
+    });
+    console.log('✅ 이메일 업데이트 성공:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ 이메일 업데이트 실패:', error);
+    throw error;
+  }
+};
+
+/**
+ * 세션 ID로 세션 정보 조회
+ * @param {number} sessionId - 세션 ID
+ * @returns {Promise} 세션 정보
+ */
+export const getSessionById = async (sessionId) => {
+  try {
+    const response = await api.get(`/sessions/${sessionId}/`);
+    console.log('✅ 세션 조회 성공:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ 세션 조회 실패:', error);
+    throw error;
+  }
+};
+
+/**
+ * 세션의 점수 조회
+ * @param {number} sessionId - 세션 ID
+ * @returns {Promise} 점수 정보
+ */
+export const getSessionScore = async (sessionId) => {
+  try {
+    const response = await api.get(`/sessions/${sessionId}/score/`);
+    console.log('✅ 점수 조회 성공:', response.data);
+    return response.data;
+  } catch (error) {
+    // 404는 아직 채점되지 않은 경우일 수 있음
+    if (error.response && error.response.status === 404) {
+      console.log('⏳ 아직 채점되지 않음');
+      return null;
+    }
+    console.error('❌ 점수 조회 실패:', error);
+    throw error;
+  }
+};
+
 export default api;
+
