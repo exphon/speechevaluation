@@ -1,0 +1,15 @@
+이 폴더에 4~6등급 문제에 사용될 오디오 파일을 넣어주세요.
+
+파일명 예시:
+- grade-4-01.wav (또는 .mp3)
+- grade-5-01.wav
+- grade-6-01.wav
+
+권장 사양:
+- 형식: MP3 (WAV보다 10배 작음)
+- 비트레이트: 128kbps
+- 모노 채널
+- 파일 크기: 1MB 이하 (1분 기준)
+
+WAV → MP3 변환 (FFmpeg):
+ffmpeg -i grade-4-01.wav -b:a 128k -ac 1 grade-4-01.mp3

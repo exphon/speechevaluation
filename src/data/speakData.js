@@ -59,6 +59,8 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-4-01',
       prompt: '온라인 쇼핑과 오프라인 쇼핑을 비교하여 각각의 장단점을 말해보세요.',
       hints: ['편의성', '가격/품질', '경험/안전'],
+      image: '/speaking/images/grade-4-01.png',  // 이미지 파일 경로
+      audio: '/speaking/audio/grade-4-01.wav',   // 오디오 파일 경로
     },
   ],
   5: [
@@ -67,6 +69,8 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-5-01',
       prompt: '지역 사회의 쓰레기 문제 해결을 위해 어떤 정책이 필요한지 의견을 말해보세요.',
       hints: ['문제의 현황', '구체적 대안', '기대 효과', '우려 사항'],
+      image: '/speaking/images/grade-5-01.png',
+      audio: '/speaking/audio/grade-5-01.wav',
     },
   ],
   6: [
@@ -75,6 +79,8 @@ const baseItemsByGrade = /** @type {Record<number, SpeakItem[]>} */({
       id: 'A-6-01',
       prompt: '출산율 저하의 원인을 설명하고, 실질적인 해결 방안을 제시하세요.',
       hints: ['원인 분석', '단기/장기 대책', '현실적 실행 가능성'],
+      image: '/speaking/images/grade-6-01.png',
+      audio: '/speaking/audio/grade-6-01.wav',
     },
   ],
 });

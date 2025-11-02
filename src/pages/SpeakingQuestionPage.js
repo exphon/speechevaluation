@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import RecordButton from '../components/RecordButton';
 import CountdownTimer from '../components/CountdownTimer';
@@ -27,6 +27,9 @@ const SpeakingQuestionPage = () => {
   const [phase, setPhase] = useState('prep'); // 'prep' | 'answer' | 'recorded' | 'uploading' | 'completed'
   const [recording, setRecording] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(null);
+
+  // 오디오 재생 ref
+  const audioRef = useRef(null);
 
   // 초기화
   useEffect(() => {
@@ -206,6 +209,45 @@ const SpeakingQuestionPage = () => {
             <div className="question-text">
               <h2 className="question-main">{currentQ.item.prompt}</h2>
             </div>
+
+            {/* 이미지 표시 (4~6등급) */}
+            {currentQ.item.image && (
+              <div className="question-image-container">
+                <img 
+                  src={currentQ.item.image} 
+                  alt={`${currentQ.grade}등급 문제 이미지`}
+                  className="question-image"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    console.error('이미지 로드 실패:', currentQ.item.image);
+                  }}
+                />
+              </div>
+            )}
+
+            {/* 오디오 재생 (4~6등급) */}
+            {currentQ.item.audio && (
+              <div className="question-audio-container">
+                <audio 
+                  ref={audioRef}
+                  src={currentQ.item.audio}
+                  onError={() => {
+                    console.error('오디오 로드 실패:', currentQ.item.audio);
+                  }}
+                />
+                <button 
+                  className="audio-play-button"
+                  onClick={() => {
+                    if (audioRef.current) {
+                      audioRef.current.currentTime = 0;
+                      audioRef.current.play();
+                    }
+                  }}
+                >
+                  🔊 음성 듣기
+                </button>
+              </div>
+            )}
 
             {currentQ.item.hints && currentQ.item.hints.length > 0 && (
               <div className="tips-box">
