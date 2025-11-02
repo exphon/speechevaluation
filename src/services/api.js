@@ -248,7 +248,14 @@ export const getMetadataByParticipantId = async (participantId) => {
       let sessions = [];
       if (response.data.results && Array.isArray(response.data.results)) {
         sessions = response.data.results;
-        nextUrl = response.data.next ? new URL(response.data.next).pathname + new URL(response.data.next).search : null;
+        
+        // next URL에서 query string만 추출 (pathname은 /api/sessions/이므로 /sessions/로 변경)
+        if (response.data.next) {
+          const url = new URL(response.data.next);
+          nextUrl = '/sessions/' + url.search; // /sessions/?page=2&participant_id=...
+        } else {
+          nextUrl = null;
+        }
       } else if (Array.isArray(response.data)) {
         sessions = response.data;
         nextUrl = null;
