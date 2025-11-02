@@ -263,9 +263,28 @@ export const getMetadataByParticipantId = async (participantId) => {
     let targetSession = null;
     if (participantId.startsWith('P_')) {
       // 발음평가 세션 찾기: name이 P_로 시작하는 세션
+      console.log('🔍 세션 목록 상세:', sessions.map(s => ({
+        id: s.id,
+        name: s.name,
+        participant_id_in_metadata: s.metadata ? (typeof s.metadata === 'string' ? JSON.parse(s.metadata).participant_id : s.metadata.participant_id) : null
+      })));
+      
       const pronSessions = sessions.filter(s => s.name && s.name.startsWith('P_'));
       console.log(`🔍 Filtered pronunciation sessions: ${pronSessions.length}`);
-      targetSession = pronSessions[0]; // 가장 최근 발음평가 세션
+      
+      // name이 P_로 시작하는 세션이 없으면, metadata.participant_id가 P_로 시작하는 세션 찾기
+      if (pronSessions.length === 0) {
+        console.log('⚠️ name으로 찾지 못함, metadata.participant_id로 재시도...');
+        const metadataPronSessions = sessions.filter(s => {
+          if (!s.metadata) return false;
+          const meta = typeof s.metadata === 'string' ? JSON.parse(s.metadata) : s.metadata;
+          return meta.participant_id && meta.participant_id.startsWith('P_');
+        });
+        console.log(`🔍 Filtered by metadata.participant_id: ${metadataPronSessions.length}`);
+        targetSession = metadataPronSessions[0];
+      } else {
+        targetSession = pronSessions[0]; // 가장 최근 발음평가 세션
+      }
     } else {
       // 일반 조회는 첫 번째 세션
       targetSession = sessions[0];
