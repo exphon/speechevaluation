@@ -98,14 +98,22 @@ const CompletionPage = () => {
         
       } catch (error) {
         console.error(`❌ 전사 실패 (${recordingId}):`, {
-          error: error,
-          response: error.response?.data,
+          recordingId: recordingId,
           status: error.response?.status,
-          message: error.message
+          errorData: error.response?.data,
+          errorDataString: JSON.stringify(error.response?.data),
+          message: error.message,
+          fullError: error
         });
+        
+        const errorMessage = error.response?.data?.error || 
+                            error.response?.data?.detail || 
+                            error.response?.data?.message ||
+                            error.message;
+        
         setTranscriptionErrors(prev => ({
           ...prev,
-          [recordingId]: error.response?.data?.error || error.response?.data?.detail || error.message
+          [recordingId]: errorMessage
         }));
       }
     }
