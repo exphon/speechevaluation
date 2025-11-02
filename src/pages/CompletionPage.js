@@ -140,27 +140,54 @@ const CompletionPage = () => {
         <div className="success-icon">🎉</div>
         
         <h1 className="completion-title">
-          모든 녹음이 완료되었습니다!
+          발음 평가가 완료되었습니다!
         </h1>
         
         <p className="completion-message">
           수고하셨습니다. 총 {totalRecordings}개의 녹음이 {sessionId ? '서버에 업로드' : '로컬에 저장'}되었습니다.
         </p>
 
+        {sessionId && meta?.participant_id && (
+          <div className="participant-id-card">
+            <div className="card-header">
+              <span className="card-icon">🆔</span>
+              <h3>참여자 ID</h3>
+            </div>
+            <div className="card-body">
+              <div className="id-display">
+                {meta.participant_id}
+              </div>
+              <div className="card-notice">
+                <div className="notice-icon">⚠️</div>
+                <div className="notice-content">
+                  <strong>중요: 이 ID를 반드시 기억하세요!</strong>
+                  <p>말하기 평가를 진행하려면 이 ID가 필요합니다.</p>
+                </div>
+              </div>
+              <div className="card-instruction">
+                <div className="instruction-title">💡 말하기 평가 시 입력 방법</div>
+                <div className="instruction-example">
+                  <div className="example-row">
+                    <span className="label">참여자 ID:</span>
+                    <span className="value">{meta.participant_id}</span>
+                  </div>
+                  <div className="example-arrow">↓</div>
+                  <div className="example-row">
+                    <span className="label">입력할 숫자:</span>
+                    <span className="value highlight">{meta.participant_id.replace('P_', '')}</span>
+                  </div>
+                  <div className="example-note">
+                    (P_ 제외하고 숫자만 입력)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {sessionId ? (
           <div className="session-info-box">
-            <h4>평가 정보</h4>
-            {meta?.participant_id && (
-              <p>
-                참여자 ID: <strong>{meta.participant_id}</strong>
-                <br />
-                <small style={{color: '#666', fontSize: '13px'}}>
-                  💡 말하기평가 시 숫자 부분만 입력하세요 (P_ 제외)
-                  <br />
-                  예: {meta.participant_id} → {meta.participant_id.replace('P_', '')}
-                </small>
-              </p>
-            )}
+            <h4>세션 정보</h4>
             <p>세션 ID: <strong>{sessionId}</strong></p>
           </div>
         ) : (
