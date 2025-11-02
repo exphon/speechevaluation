@@ -151,6 +151,44 @@
   font-style: italic;
 }
 
+.score-lookup-section {
+  text-align: center;
+  margin: 40px 0 20px;
+  padding: 30px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 16px;
+  border: 2px dashed #667eea;
+}
+
+.score-lookup-button {
+  padding: 16px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.score-lookup-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.score-lookup-button:active {
+  transform: translateY(0);
+}
+
+.lookup-hint {
+  font-size: 14px;
+  color: #666;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
 .system-info {
   text-align: center;
   margin-top: 30px;

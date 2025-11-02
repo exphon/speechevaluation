@@ -18,6 +18,11 @@ const IndexPage = () => {
     navigate('/speaking-login');
   };
 
+  const handleScoreLookupClick = () => {
+    // 점수 조회 페이지로 이동
+    navigate('/score-lookup');
+  };
+
   return (
     <div className="index-page">
       <div className="welcome-container">
@@ -71,6 +76,16 @@ const IndexPage = () => {
               <p className="note">* 발음평가를 먼저 완료해야 합니다</p>
             </div>
           </div>
+        </div>
+
+        <div className="score-lookup-section">
+          <button 
+            className="score-lookup-button"
+            onClick={handleScoreLookupClick}
+          >
+            📊 평가 점수 조회하기
+          </button>
+          <p className="lookup-hint">평가 완료 후 세션 ID로 점수를 확인하세요</p>
         </div>
 
         <div className="system-info">

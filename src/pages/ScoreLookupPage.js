@@ -82,7 +82,7 @@ const ScoreLookupPage = () => {
                 id="sessionId"
                 value={sessionId}
                 onChange={(e) => setSessionId(e.target.value)}
-                placeholder="예: 123"
+                placeholder="예: 12356"
                 disabled={searching}
                 required
               />
