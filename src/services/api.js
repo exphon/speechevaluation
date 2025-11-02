@@ -258,32 +258,49 @@ export const getMetadataByParticipantId = async (participantId) => {
       throw error;
     }
     
-    // 가장 최근 세션 선택 (첫 번째)
-    const session = sessions[0];
-    console.log('✅ Selected session:', session);
+    // P_로 시작하는 ID는 발음평가 세션만 필터링
+    // S_로 시작하는 ID가 조회되는 경우를 방지
+    let targetSession = null;
+    if (participantId.startsWith('P_')) {
+      // 발음평가 세션 찾기: name이 P_로 시작하는 세션
+      const pronSessions = sessions.filter(s => s.name && s.name.startsWith('P_'));
+      console.log(`🔍 Filtered pronunciation sessions: ${pronSessions.length}`);
+      targetSession = pronSessions[0]; // 가장 최근 발음평가 세션
+    } else {
+      // 일반 조회는 첫 번째 세션
+      targetSession = sessions[0];
+    }
+    
+    if (!targetSession) {
+      const error = new Error('Pronunciation evaluation session not found');
+      error.response = { status: 404 };
+      throw error;
+    }
+    
+    console.log('✅ Selected session:', targetSession);
     
     // metadata 필드 파싱
-    if (session.metadata) {
-      const metadata = typeof session.metadata === 'string' 
-        ? JSON.parse(session.metadata) 
-        : session.metadata;
+    if (targetSession.metadata) {
+      const metadata = typeof targetSession.metadata === 'string' 
+        ? JSON.parse(targetSession.metadata) 
+        : targetSession.metadata;
       
       console.log('✅ Metadata extracted:', metadata);
       
       // 세션에 저장된 발음평가 레벨 가져오기
       console.log('🔍 Checking pronunciation_level from:');
-      console.log('  - session.pronunciation_level:', session.pronunciation_level);
+      console.log('  - session.pronunciation_level:', targetSession.pronunciation_level);
       console.log('  - metadata.pronunciation_level:', metadata.pronunciation_level);
       
       // session.pronunciation_level 우선 (서버에 PATCH로 저장된 값)
-      const pronunciationLevel = session.pronunciation_level || metadata.pronunciation_level || '하';
+      const pronunciationLevel = targetSession.pronunciation_level || metadata.pronunciation_level || '하';
       
       console.log(`📊 Final Pronunciation Level: ${pronunciationLevel}`);
       
       return {
         ...metadata,
-        session_id: session.id,
-        session_name: session.name,
+        session_id: targetSession.id,
+        session_name: targetSession.name,
         pronunciation_level: pronunciationLevel, // 발음평가 레벨 추가
       };
     }
