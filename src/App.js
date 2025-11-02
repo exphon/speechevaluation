@@ -17,18 +17,48 @@ import './App.css';
 function App() {
   // 앱 시작 시 CSRF 토큰 받아오기
   useEffect(() => {
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '/api';
+    const rawBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
-    // 백엔드 로그인 엔드포인트를 호출해 CSRF 쿠키를 미리 수신한다.
-    fetch(`${API_BASE_URL}/login/`, {
+    const resolveLoginUrl = () => {
+      if (!rawBaseUrl) {
+        return '/login/';
+      }
+
+      try {
+        const url = new URL(rawBaseUrl);
+        url.pathname = '/login/';
+        url.search = '';
+        return url.toString();
+      } catch (error) {
+        const trimmed = rawBaseUrl.replace(/\/api\/?$/, '');
+        const normalized = trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
+        if (!normalized) {
+          return '/login/';
+        }
+        if (normalized.startsWith('http')) {
+          return `${normalized}/login/`;
+        }
+        return normalized.startsWith('/') ? `${normalized}/login/` : `/${normalized}/login/`;
+      }
+    };
+
+    const loginUrl = resolveLoginUrl();
+    console.log('🌐 CSRF initialization request target:', loginUrl);
+
+    fetch(loginUrl, {
       method: 'GET',
       credentials: 'include', // ⚠️ 쿠키 전송 허용
     })
-      .then(() => {
-        console.log('✅ CSRF token initialized via /login/');
+      .then(async (response) => {
+        if (!response.ok) {
+          const bodyText = await response.text();
+          console.warn('⚠️ CSRF token request failed:', response.status, bodyText);
+          return;
+        }
+        console.log('✅ CSRF token initialized via', loginUrl);
       })
       .catch((error) => {
-        console.warn('⚠️ CSRF token initialization failed (non-critical):', error.message);
+        console.warn('⚠️ CSRF token initialization error (non-critical):', error.message);
       });
   }, []);
 
