@@ -95,19 +95,19 @@ const SpeakingCompletionPage = () => {
 
               <div className="button-group">
                 <button 
+                  type="submit" 
+                  className="submit-button"
+                  disabled={submitting}
+                >
+                  {submitting ? '저장 중...' : '등록하기'}
+                </button>
+                <button 
                   type="button" 
                   className="skip-button"
                   onClick={() => setEmailSubmitted(true)}
                   disabled={submitting}
                 >
                   건너뛰기
-                </button>
-                <button 
-                  type="submit" 
-                  className="submit-button"
-                  disabled={submitting}
-                >
-                  {submitting ? '저장 중...' : '등록하기'}
                 </button>
               </div>
             </form>
