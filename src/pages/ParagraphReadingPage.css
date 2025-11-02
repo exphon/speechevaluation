@@ -53,10 +53,11 @@
 }
 
 .paragraph-text {
-  font-size: 24px;
+  font-size: 28px;
   color: #333;
   line-height: 2;
   text-align: justify;
+  font-weight: 700;
 }
 
 .paragraph-text p {
