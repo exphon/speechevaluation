@@ -18,6 +18,8 @@ const MetaInfoPage = () => {
   const [nativeLanguage, setNativeLanguage] = useState('');
   const [koreaResidence, setKoreaResidence] = useState(''); // 한국 거주 경험
   const [koreanLearningMonths, setKoreanLearningMonths] = useState(''); // 한국어 학습 기간(개월)
+  const [topikLevel, setTopikLevel] = useState(''); // TOPIK 등급
+  const [otherTestScore, setOtherTestScore] = useState(''); // 기타 시험 점수
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -41,6 +43,8 @@ const MetaInfoPage = () => {
       native_language: nativeLanguage || null,
       korea_residence: koreaResidence || null,
       korean_learning_months: koreanLearningMonths ? Number(koreanLearningMonths) : null,
+      topik_level: topikLevel || null,
+      other_test_score: otherTestScore || null,
       created_at: new Date().toISOString(),
     };
 
@@ -155,6 +159,31 @@ const MetaInfoPage = () => {
               onChange={(e) => setKoreanLearningMonths(e.target.value)}
               placeholder="예: 24 (2년)"
             />
+          </div>
+
+          <div className="form-row">
+            <label>TOPIK 등급</label>
+            <select value={topikLevel} onChange={(e) => setTopikLevel(e.target.value)}>
+              <option value="">선택하세요</option>
+              <option value="TOPIK I - 1급">TOPIK I - 1급</option>
+              <option value="TOPIK I - 2급">TOPIK I - 2급</option>
+              <option value="TOPIK II - 3급">TOPIK II - 3급</option>
+              <option value="TOPIK II - 4급">TOPIK II - 4급</option>
+              <option value="TOPIK II - 5급">TOPIK II - 5급</option>
+              <option value="TOPIK II - 6급">TOPIK II - 6급</option>
+              <option value="응시 안 함">응시 안 함</option>
+            </select>
+          </div>
+
+          <div className="form-row">
+            <label>기타 한국어 시험 점수</label>
+            <input
+              type="text"
+              value={otherTestScore}
+              onChange={(e) => setOtherTestScore(e.target.value)}
+              placeholder="예: KLAT 80점, KBS 한국어능력시험 3급"
+            />
+            <p className="hint">TOPIK 외 다른 한국어 시험 점수를 입력하세요</p>
           </div>
 
           <div className="form-actions">
