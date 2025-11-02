@@ -41,6 +41,7 @@ const SpeakingLoginPage = () => {
       const metadata = await getMetadataByParticipantId(pronunciationId);
       
       console.log('✅ 발음평가 메타데이터 조회 성공:', metadata);
+      console.log('📊 발음 평가 등급:', metadata.pronunciation_level);
       
       // 말하기평가용 ID 생성
       const speakingId = generateSpeakingId(participantId);
@@ -53,6 +54,9 @@ const SpeakingLoginPage = () => {
         evaluation_type: 'speaking',
         created_at: new Date().toISOString(),
       };
+      
+      console.log('📝 말하기평가 메타데이터:', speakingMetadata);
+      console.log('📊 전달될 발음 평가 등급:', speakingMetadata.pronunciation_level);
 
       try {
         const sessionName = speakingId; // S_123456 형태로 저장

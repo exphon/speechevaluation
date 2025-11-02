@@ -270,10 +270,15 @@ export const getMetadataByParticipantId = async (participantId) => {
       
       console.log('✅ Metadata extracted:', metadata);
       
-      // 세션에 저장된 발음평가 레벨 가져오기 (없으면 '하' 기본값)
+      // 세션에 저장된 발음평가 레벨 가져오기
+      console.log('🔍 Checking pronunciation_level from:');
+      console.log('  - session.pronunciation_level:', session.pronunciation_level);
+      console.log('  - metadata.pronunciation_level:', metadata.pronunciation_level);
+      
+      // session.pronunciation_level 우선 (서버에 PATCH로 저장된 값)
       const pronunciationLevel = session.pronunciation_level || metadata.pronunciation_level || '하';
       
-      console.log(`📊 Pronunciation Level: ${pronunciationLevel}`);
+      console.log(`📊 Final Pronunciation Level: ${pronunciationLevel}`);
       
       return {
         ...metadata,
