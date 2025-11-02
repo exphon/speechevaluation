@@ -26,52 +26,6 @@ const CompletionPage = () => {
   const totalRecordings = wordRecordings.length + sentenceRecordings.length + (paragraphRecording ? 1 : 0);
 
   /**
-   * 단일 녹음 전사
-   */
-  const handleTranscribe = async (recordingId) => {
-    if (!recordingId) {
-      alert('로컬 모드에서는 전사를 사용할 수 없습니다.');
-      return;
-    }
-
-    try {
-      setTranscribing(true);
-      console.log(`🎤 전사 시작: Recording ID ${recordingId}`);
-      
-      const result = await transcribeRecording(recordingId);
-      
-      // 전사 텍스트 저장
-      const transcriptionText = result.transcription || result.text;
-      setTranscriptions(prev => ({
-        ...prev,
-        [recordingId]: transcriptionText
-      }));
-      
-      // 추가 정보 저장 (confidence, language 등)
-      if (result.confidence !== undefined || result.language) {
-        setTranscriptionDetails(prev => ({
-          ...prev,
-          [recordingId]: {
-            confidence: result.confidence,
-            language: result.language
-          }
-        }));
-      }
-      
-      console.log('✅ 전사 완료:', result);
-      
-    } catch (error) {
-      console.error('❌ 전사 실패:', error);
-      setTranscriptionErrors(prev => ({
-        ...prev,
-        [recordingId]: error.response?.data?.error || error.message
-      }));
-    } finally {
-      setTranscribing(false);
-    }
-  };
-
-  /**
    * 모든 녹음 전사
    */
   const handleTranscribeAll = async () => {
@@ -303,17 +257,6 @@ const CompletionPage = () => {
                       <span className="recording-title">{rec.title || rec.word}</span>
                       <span className="recording-id">{rec.id ? `ID: ${rec.id}` : '로컬 저장'}</span>
                     </div>
-                    {rec.id && (
-                      <div className="recording-actions">
-                        <button 
-                          className="transcribe-button"
-                          onClick={() => handleTranscribe(rec.id)}
-                          disabled={transcribing || transcriptions[rec.id]}
-                        >
-                          {transcriptions[rec.id] ? '✅' : '🎤 전사'}
-                        </button>
-                      </div>
-                    )}
                     {transcriptions[rec.id] && (
                       <div className="transcription-result">
                         <strong>전사 결과:</strong> {transcriptions[rec.id]}
@@ -345,17 +288,6 @@ const CompletionPage = () => {
                       <span className="recording-title">{rec.title || rec.sentence}</span>
                       <span className="recording-id">{rec.id ? `ID: ${rec.id}` : '로컬 저장'}</span>
                     </div>
-                    {rec.id && (
-                      <div className="recording-actions">
-                        <button 
-                          className="transcribe-button"
-                          onClick={() => handleTranscribe(rec.id)}
-                          disabled={transcribing || transcriptions[rec.id]}
-                        >
-                          {transcriptions[rec.id] ? '✅' : '🎤 전사'}
-                        </button>
-                      </div>
-                    )}
                     {transcriptions[rec.id] && (
                       <div className="transcription-result">
                         <strong>전사 결과:</strong> {transcriptions[rec.id]}
@@ -386,17 +318,6 @@ const CompletionPage = () => {
                     <span className="recording-title">{paragraphRecording.title}</span>
                     <span className="recording-id">{paragraphRecording.id ? `ID: ${paragraphRecording.id}` : '로컬 저장'}</span>
                   </div>
-                  {paragraphRecording.id && (
-                    <div className="recording-actions">
-                      <button 
-                        className="transcribe-button"
-                        onClick={() => handleTranscribe(paragraphRecording.id)}
-                        disabled={transcribing || transcriptions[paragraphRecording.id]}
-                      >
-                        {transcriptions[paragraphRecording.id] ? '✅' : '🎤 전사'}
-                      </button>
-                    </div>
-                  )}
                   {transcriptions[paragraphRecording.id] && (
                     <div className="transcription-result">
                       <strong>전사 결과:</strong> {transcriptions[paragraphRecording.id]}
