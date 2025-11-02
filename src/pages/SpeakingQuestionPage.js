@@ -65,6 +65,12 @@ const SpeakingQuestionPage = () => {
     setPhase('answer');
   };
 
+  // 준비시간 중 녹음 시작 → 대답시간으로 즉시 전환
+  const handleRecordingStartDuringPrep = () => {
+    console.log('🎤 준비시간 중 녹음 시작 → 대답시간으로 전환');
+    setPhase('answer');
+  };
+
   // 대답시간 완료 → 녹음 가능 상태로 전환 (녹음 중이 아니면)
   const handleAnswerComplete = () => {
     console.log('⏰ 대답시간 완료');
@@ -230,7 +236,10 @@ const SpeakingQuestionPage = () => {
                 label="준비시간"
                 autoStart={true}
               />
-              <RecordButton onRecordingComplete={handleRecordingComplete} />
+              <RecordButton 
+                onRecordingComplete={handleRecordingComplete}
+                onRecordingStart={handleRecordingStartDuringPrep}
+              />
               <p className="instruction-text">
                 📖 질문을 읽고 답변을 준비하세요
                 <br />

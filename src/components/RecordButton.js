@@ -5,10 +5,11 @@ import './RecordButton.css';
 /**
  * 녹음 버튼 컴포넌트
  * @param {Function} onRecordingComplete - 녹음 완료 시 호출되는 콜백 (audioBlob)
+ * @param {Function} onRecordingStart - 녹음 시작 시 호출되는 콜백
  * @param {boolean} disabled - 버튼 비활성화 여부
  * @param {boolean} autoStart - 자동으로 녹음 시작 여부
  */
-const RecordButton = ({ onRecordingComplete, disabled = false, autoStart = false }) => {
+const RecordButton = ({ onRecordingComplete, onRecordingStart, disabled = false, autoStart = false }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recorder, setRecorder] = useState(null);
   const [error, setError] = useState(null);
@@ -50,6 +51,11 @@ const RecordButton = ({ onRecordingComplete, disabled = false, autoStart = false
       recorder.start();
       setIsRecording(true);
       setRecordingTime(0);
+
+      // 녹음 시작 콜백 호출
+      if (onRecordingStart) {
+        onRecordingStart();
+      }
 
       // 타이머 시작
       const intervalId = setInterval(() => {
