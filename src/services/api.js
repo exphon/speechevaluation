@@ -226,6 +226,87 @@ export const completeSession = async (sessionId) => {
 };
 
 /**
+ * 세션 삭제
+ * @param {number} sessionId - 세션 ID
+ * @returns {Promise} 삭제 결과
+ */
+export const deleteSession = async (sessionId) => {
+  try {
+    console.log(`🗑️ Deleting session ${sessionId}...`);
+    const response = await api.delete(`/sessions/${sessionId}/`);
+    console.log('✅ Session deleted:', sessionId);
+    return response.data;
+  } catch (error) {
+    console.error('❌ Session deletion error:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
+ * 녹음 파일이 없는 세션들 정리
+ * @param {string} participantId - 참여자 ID (P_ 또는 S_ 포함)
+ * @returns {Promise} 정리 결과
+ */
+export const cleanupEmptySessions = async (participantId) => {
+  try {
+    console.log(`🧹 Cleaning up empty sessions for ${participantId}...`);
+    
+    // 모든 세션 가져오기
+    let allSessions = [];
+    let nextUrl = '/sessions/';
+    const params = { participant_id: participantId };
+    
+    while (nextUrl) {
+      const response = await api.get(nextUrl, { params: nextUrl === '/sessions/' ? params : {} });
+      
+      let sessions = [];
+      if (response.data.results && Array.isArray(response.data.results)) {
+        sessions = response.data.results;
+        if (response.data.next) {
+          const url = new URL(response.data.next);
+          nextUrl = '/sessions/' + url.search;
+        } else {
+          nextUrl = null;
+        }
+      } else if (Array.isArray(response.data)) {
+        sessions = response.data;
+        nextUrl = null;
+      } else {
+        nextUrl = null;
+      }
+      
+      allSessions = allSessions.concat(sessions);
+      
+      if (allSessions.length > 100) {
+        break;
+      }
+    }
+    
+    // 녹음 파일이 없는 세션 찾기 (recording_count === 0)
+    const emptySessions = allSessions.filter(s => s.recording_count === 0);
+    console.log(`📋 Found ${emptySessions.length} empty session(s) to delete`);
+    
+    // 빈 세션 삭제
+    const deletedIds = [];
+    for (const session of emptySessions) {
+      try {
+        await deleteSession(session.id);
+        deletedIds.push(session.id);
+      } catch (error) {
+        console.warn(`⚠️ Failed to delete session ${session.id}:`, error);
+      }
+    }
+    
+    console.log(`✅ Cleaned up ${deletedIds.length} empty session(s)`);
+    return { deletedCount: deletedIds.length, deletedIds };
+    
+  } catch (error) {
+    console.error('❌ Cleanup error:', error);
+    throw error;
+  }
+};
+
+/**
  * 참여자 ID로 메타데이터 조회
  * @param {string} participantId - 6자리 참여자 ID
  * @returns {Promise} 메타데이터 정보

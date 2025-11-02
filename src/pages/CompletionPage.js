@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { transcribeRecording, getRecording, updateSessionPronunciationLevel } from '../services/api';
+import { transcribeRecording, getRecording, updateSessionPronunciationLevel, cleanupEmptySessions } from '../services/api';
 import { evaluatePronunciation } from '../utils/levenshtein';
 import './CompletionPage.css';
 
@@ -148,7 +148,32 @@ const CompletionPage = () => {
     console.log('✅ 전체 전사 완료');
   };
 
+  /**
+   * 페이지 로드 시 빈 세션 정리
+   */
+  useEffect(() => {
+    const cleanupSessions = async () => {
+      if (!meta?.participant_id) {
+        return;
+      }
 
+      try {
+        console.log(`🧹 빈 세션 정리 시작: ${meta.participant_id}`);
+        const result = await cleanupEmptySessions(meta.participant_id);
+        
+        if (result.deletedCount > 0) {
+          console.log(`✅ 빈 세션 ${result.deletedCount}개 삭제됨:`, result.deletedIds);
+        } else {
+          console.log('✅ 삭제할 빈 세션 없음');
+        }
+      } catch (error) {
+        console.error('⚠️ 빈 세션 정리 실패:', error);
+        // 정리 실패해도 계속 진행
+      }
+    };
+
+    cleanupSessions();
+  }, [meta?.participant_id]);
 
   return (
     <div className="completion-page">

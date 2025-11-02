@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getMetadataByParticipantId, createSession } from '../services/api';
+import { getMetadataByParticipantId, createSession, cleanupEmptySessions } from '../services/api';
 import './SpeakingLoginPage.css';
 
 // 말하기평가용 ID 생성 (S_ 접두어)
@@ -113,6 +113,50 @@ const SpeakingLoginPage = () => {
   const handleBackToPronunciation = () => {
     navigate('/');
   };
+
+  /**
+   * 페이지 로드 시 빈 세션 정리 (발음 평가 참여자 ID 기준)
+   */
+  useEffect(() => {
+    const cleanupSessions = async () => {
+      if (!participantId || participantId.length !== 6) {
+        return;
+      }
+
+      try {
+        // 발음 평가와 말하기 평가 모두 정리
+        const pronunciationId = `P_${participantId}`;
+        const speakingId = `S_${participantId}`;
+
+        console.log(`🧹 빈 세션 정리 시작: ${pronunciationId}, ${speakingId}`);
+        
+        // 발음 평가 빈 세션 정리
+        const pResult = await cleanupEmptySessions(pronunciationId);
+        if (pResult.deletedCount > 0) {
+          console.log(`✅ 발음 평가 빈 세션 ${pResult.deletedCount}개 삭제됨:`, pResult.deletedIds);
+        }
+
+        // 말하기 평가 빈 세션 정리
+        const sResult = await cleanupEmptySessions(speakingId);
+        if (sResult.deletedCount > 0) {
+          console.log(`✅ 말하기 평가 빈 세션 ${sResult.deletedCount}개 삭제됨:`, sResult.deletedIds);
+        }
+
+        const totalDeleted = pResult.deletedCount + sResult.deletedCount;
+        if (totalDeleted === 0) {
+          console.log('✅ 삭제할 빈 세션 없음');
+        }
+      } catch (error) {
+        console.error('⚠️ 빈 세션 정리 실패:', error);
+        // 정리 실패해도 계속 진행
+      }
+    };
+
+    // participantId가 6자리일 때만 정리 실행
+    if (participantId.length === 6) {
+      cleanupSessions();
+    }
+  }, [participantId]);
 
   return (
     <div className="speaking-login-page">
