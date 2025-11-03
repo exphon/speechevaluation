@@ -375,11 +375,18 @@ export const getMetadataByParticipantId = async (participantId) => {
       console.log('📊 API Response:', response.data);
       console.log('🔗 Response status:', response.status);
       console.log('🔗 Request config:', response.config.url, response.config.params);
+      console.log('🔍 Response type check:', {
+        hasResults: !!response.data.results,
+        isArray: Array.isArray(response.data),
+        hasSessionId: !!response.data.session_id,
+        dataType: typeof response.data
+      });
       
       // 페이지네이션된 응답 처리
       let sessions = [];
       if (response.data.results && Array.isArray(response.data.results)) {
         // Django REST Framework 페이지네이션 형식
+        console.log('📦 DRF pagination format detected');
         sessions = response.data.results;
         
         // next URL에서 query string만 추출 (pathname은 /api/sessions/이므로 /sessions/로 변경)
@@ -391,6 +398,7 @@ export const getMetadataByParticipantId = async (participantId) => {
         }
       } else if (Array.isArray(response.data)) {
         // 배열 형식
+        console.log('📦 Array format detected');
         sessions = response.data;
         nextUrl = null;
       } else if (response.data.session_id) {
