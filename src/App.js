@@ -17,39 +17,13 @@ import './App.css';
 function App() {
   // 앱 시작 시 CSRF 토큰 받아오기
   useEffect(() => {
-    const rawBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    // /api/login/ 엔드포인트가 없으므로 /api/sessions/로 CSRF 토큰 획득
+    // Django에서 @ensure_csrf_cookie를 sessions/ 뷰에 적용했다고 가정
+    const csrfUrl = '/api/sessions/?limit=1';
+    
+    console.log('🌐 CSRF initialization request target:', csrfUrl);
 
-    const resolveLoginUrl = () => {
-      const fallback = '/api/login/';
-
-      if (!rawBaseUrl) {
-        return fallback;
-      }
-
-      try {
-        const url = new URL(rawBaseUrl);
-        url.pathname = '/login/';
-        url.search = '';
-        return url.toString();
-      } catch (error) {
-        const normalized = rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
-        if (!normalized) {
-          return fallback;
-        }
-        if (normalized.startsWith('http')) {
-          return `${normalized}/login/`;
-        }
-        if (!normalized.startsWith('/')) {
-          return `/${normalized}/login/`;
-        }
-        return `${normalized}/login/`;
-      }
-    };
-
-    const loginUrl = resolveLoginUrl();
-    console.log('🌐 CSRF initialization request target:', loginUrl);
-
-    fetch(loginUrl, {
+    fetch(csrfUrl, {
       method: 'GET',
       credentials: 'include', // ⚠️ 쿠키 전송 허용
     })
@@ -57,9 +31,10 @@ function App() {
         if (!response.ok) {
           const bodyText = await response.text();
           console.warn('⚠️ CSRF token request failed:', response.status, bodyText);
+          console.warn('   This is non-critical. Continuing without CSRF token.');
           return;
         }
-        console.log('✅ CSRF token initialized via', loginUrl);
+        console.log('✅ CSRF token initialized via', csrfUrl);
         
         // 쿠키 확인 로그
         setTimeout(() => {
