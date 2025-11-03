@@ -20,8 +20,10 @@ function App() {
     const rawBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
     const resolveLoginUrl = () => {
+      const fallback = '/api/login/';
+
       if (!rawBaseUrl) {
-        return '/login/';
+        return fallback;
       }
 
       try {
@@ -30,15 +32,17 @@ function App() {
         url.search = '';
         return url.toString();
       } catch (error) {
-        const trimmed = rawBaseUrl.replace(/\/api\/?$/, '');
-        const normalized = trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
+        const normalized = rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
         if (!normalized) {
-          return '/login/';
+          return fallback;
         }
         if (normalized.startsWith('http')) {
           return `${normalized}/login/`;
         }
-        return normalized.startsWith('/') ? `${normalized}/login/` : `/${normalized}/login/`;
+        if (!normalized.startsWith('/')) {
+          return `/${normalized}/login/`;
+        }
+        return `${normalized}/login/`;
       }
     };
 
