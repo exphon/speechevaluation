@@ -379,6 +379,7 @@ export const getMetadataByParticipantId = async (participantId) => {
       // 페이지네이션된 응답 처리
       let sessions = [];
       if (response.data.results && Array.isArray(response.data.results)) {
+        // Django REST Framework 페이지네이션 형식
         sessions = response.data.results;
         
         // next URL에서 query string만 추출 (pathname은 /api/sessions/이므로 /sessions/로 변경)
@@ -389,9 +390,17 @@ export const getMetadataByParticipantId = async (participantId) => {
           nextUrl = null;
         }
       } else if (Array.isArray(response.data)) {
+        // 배열 형식
         sessions = response.data;
         nextUrl = null;
+      } else if (response.data.session_id) {
+        // 단일 객체 형식 (Django 커스텀 응답)
+        console.log('✅ Single session object detected');
+        sessions = [response.data];
+        nextUrl = null;
       } else {
+        // 알 수 없는 형식
+        console.warn('⚠️ Unknown response format:', response.data);
         nextUrl = null;
       }
       
