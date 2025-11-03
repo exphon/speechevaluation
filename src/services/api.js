@@ -32,17 +32,23 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const csrfToken = getCookie('csrftoken');
-    console.log('🔐 [Request Interceptor]', {
-      url: config.url,
-      method: config.method,
-      csrfToken: csrfToken ? `${csrfToken.substring(0, 10)}...` : 'NONE',
-      allCookies: document.cookie ? document.cookie.substring(0, 100) : 'EMPTY'
-    });
+    
+    // GET 요청은 CSRF 토큰이 필요 없으므로 경고 제거
+    const needsCsrf = config.method && ['post', 'put', 'patch', 'delete'].includes(config.method.toLowerCase());
+    
+    if (needsCsrf) {
+      console.log('🔐 [Request Interceptor]', {
+        url: config.url,
+        method: config.method,
+        csrfToken: csrfToken ? `${csrfToken.substring(0, 10)}...` : 'NONE',
+      });
+    }
     
     if (csrfToken) {
       config.headers['X-CSRFToken'] = csrfToken;
-    } else {
-      console.warn('⚠️ CSRF token not found in cookies!');
+    } else if (needsCsrf) {
+      console.warn('⚠️ CSRF token not found for', config.method.toUpperCase(), config.url);
+      console.warn('   Backend may reject this request. Check Django CSRF settings.');
     }
     return config;
   },
@@ -53,6 +59,7 @@ api.interceptors.request.use(
 
 /**
  * 단일 녹음 파일을 서버에 업로드
+```
  * @param {Blob} audioBlob - 녹음된 오디오 파일
  * @param {string} title - 녹음 제목
  * @param {number} sessionId - 세션 ID (선택)
