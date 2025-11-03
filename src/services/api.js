@@ -366,10 +366,15 @@ export const getMetadataByParticipantId = async (participantId) => {
     let nextUrl = '/sessions/';
     const params = { participant_id: participantId };
     
+    console.log('🌐 Request URL:', nextUrl);
+    console.log('📦 Request params:', params);
+    
     while (nextUrl) {
       const response = await api.get(nextUrl, { params: nextUrl === '/sessions/' ? params : {} });
       
       console.log('📊 API Response:', response.data);
+      console.log('🔗 Response status:', response.status);
+      console.log('🔗 Request config:', response.config.url, response.config.params);
       
       // 페이지네이션된 응답 처리
       let sessions = [];
