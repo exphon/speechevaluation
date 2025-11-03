@@ -32,8 +32,17 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const csrfToken = getCookie('csrftoken');
+    console.log('🔐 [Request Interceptor]', {
+      url: config.url,
+      method: config.method,
+      csrfToken: csrfToken ? `${csrfToken.substring(0, 10)}...` : 'NONE',
+      allCookies: document.cookie ? document.cookie.substring(0, 100) : 'EMPTY'
+    });
+    
     if (csrfToken) {
       config.headers['X-CSRFToken'] = csrfToken;
+    } else {
+      console.warn('⚠️ CSRF token not found in cookies!');
     }
     return config;
   },

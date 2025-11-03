@@ -60,6 +60,18 @@ function App() {
           return;
         }
         console.log('✅ CSRF token initialized via', loginUrl);
+        
+        // 쿠키 확인 로그
+        setTimeout(() => {
+          const cookies = document.cookie;
+          console.log('🍪 Cookies after CSRF init:', cookies ? cookies.substring(0, 200) : 'EMPTY');
+          const csrfToken = document.cookie.split('; ').find(row => row.startsWith('csrftoken='));
+          if (csrfToken) {
+            console.log('✅ CSRF token found:', csrfToken.substring(0, 30) + '...');
+          } else {
+            console.warn('⚠️ CSRF token NOT found in cookies after initialization!');
+          }
+        }, 500);
       })
       .catch((error) => {
         console.warn('⚠️ CSRF token initialization error (non-critical):', error.message);
